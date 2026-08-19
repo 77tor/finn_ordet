@@ -1,11 +1,6 @@
-// --- IMPORT ---
-import { openmojiMap } from './openmoji.js';
 
-// Konverterer openmojiMap-objektet til en array av objekter
-const substantivDb = Object.entries(openmojiMap).map(([sti, ord]) => ({
-    ord: ord,
-    symbol: `<img src="${sti}" alt="${ord}" style="width: 40px; height: 40px; vertical-align: middle;">`
-}));
+// --- IMPORT ---
+import { substantivDb } from './bilder.js';
 
 // --- TILSTAND OG VARIABLER ---
 let gjeldendeOrdListe = [];
@@ -293,20 +288,8 @@ window.filtrerDatabaseGrid = filtrerDatabaseGrid;
 window.leggTilEgetOrd = leggTilEgetOrd;
 window.lagreModalValg = lagreModalValg;
 
-// --- CRITICAL FIX: AUTOMATISK START NÅR SIDEN LASTES ---
-document.addEventListener("DOMContentLoaded", () => {
-    // Genererer første oppgave automatisk
-    generateStaveKryss(true);
-});
-
-// Hvis DOM allerede er lastet inn når modulen kjører:
-if (document.readyState === "complete" || document.readyState === "interactive") {
-    generateStaveKryss(true);
-}
-
 // --- AUTOMATISK INITIALISERING VED LASTING ---
 function initApp() {
-    // Generer oppgave med en gang siden er klar
     generateStaveKryss(true);
 }
 

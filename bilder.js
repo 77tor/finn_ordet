@@ -1,9 +1,7 @@
-// --- DATABASE & TILSTAND ---
-let selectedAdvancedWords = [];
-let activeWords = [];
-let mode = 'bilder';
+import { openmojiMap } from './openmoji.js';
 
-const substantivDb = [
+// 1. Emoji-databasen
+const emojiDb = [
     {ord: "agurk", symbol: "🥒"}, {ord: "alv", symbol: "🧝"}, {ord: "and", symbol: "🦆"}, {ord: "anker", symbol: "⚓"}, {ord: "ape", symbol: "🐒"},
     {ord: "appelsin", symbol: "🍊"}, {ord: "arm", symbol: "💪"}, {ord: "avis", symbol: "📰"}, {ord: "bad", symbol: "🛀"}, {ord: "ball", symbol: "⚽"},
     {ord: "ballong", symbol: "🎈"}, {ord: "bamse", symbol: "🧸"}, {ord: "banan", symbol: "🍌"}, {ord: "benk", symbol: "🪑"},
@@ -53,134 +51,17 @@ const substantivDb = [
     {ord: "tre", symbol: "🌳"}, {ord: "tromme", symbol: "🥁"}, {ord: "tv", symbol: "📺"}, {ord: "tå", symbol: "🦶"}, {ord: "tønne", symbol: "🛢️"},
     {ord: "ulv", symbol: "🐺"}, {ord: "vann", symbol: "💧"}, {ord: "vekt", symbol: "⚖️"}, {ord: "vest", symbol: "🦺"}, {ord: "vogn", symbol: "🛒"},
     {ord: "øks", symbol: "🪓"}, {ord: "øre", symbol: "👂"}, {ord: "ørn", symbol: "🦅"}
-];
+].map(item => ({
+    ord: item.ord,
+    symbol: `<span style="font-size: 28px; line-height: 1;">${item.symbol}</span>`
+}));
 
-// --- HJELPEFUNKSJONER ---
-function finnSymbolForOrd(soktOrd) {
-    const treff = substantivDb.find(item => item.ord.toLowerCase() === soktOrd.toLowerCase());
-    return treff ? treff.symbol : "📝";
-}
+// 2. OpenMoji-bildene
+const openmojiDb = Object.entries(openmojiMap).map(([sti, ord]) => ({
+    ord: ord,
+    symbol: `<img src="${sti}" alt="${ord}" style="width: 40px; height: 40px; object-fit: contain;">`
+}));
 
-function tellStavelser(ord) {
-    const vokalTreff = ord.toLowerCase().match(/[aeiouyæøå]/g);
-    return vokalTreff ? vokalTreff.length : 1;
-}
-
-// --- MODAL FUNKSJONER ---
-function apneOrdModal() {
-    const modal = document.getElementById('ord-modal');
-    if (modal) { modal.style.display = 'flex'; fyllDatabaseGrid(); oppdaterMineOrdListe(); }
-}
-
-function lukkOrdModal() {
-    const modal = document.getElementById('ord-modal');
-    if (modal) modal.style.display = 'none';
-}
-
-function byttFane(faneNavn) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    if (faneNavn === 'database') {
-        document.querySelectorAll('.tab-btn')[0]?.classList.add('active');
-        document.getElementById('fane-database')?.classList.add('active');
-    } else {
-        document.querySelectorAll('.tab-btn')[1]?.classList.add('active');
-        document.getElementById('fane-egne')?.classList.add('active');
-    }
-}
-
-function fyllDatabaseGrid(filterTekst = "") {
-    const grid = document.getElementById('database-grid');
-    if (!grid) return;
-    grid.innerHTML = "";
-    
-    const valgtAntallStavelser = parseInt(document.getElementById('select-stavelser')?.value || "2", 10);
-
-    substantivDb
-        .filter(item => tellStavelser(item.ord) === valgtAntallStavelser)
-        .filter(item => item.ord.toLowerCase().includes(filterTekst.toLowerCase()))
-        .forEach(item => {
-            const kort = document.createElement('div');
-            kort.className = `ord-kort ${selectedAdvancedWords.some(w => w.ord.toLowerCase() === item.ord.toLowerCase()) ? 'valgt' : ''}`;
-            kort.onclick = () => veksleValgtOrd(item, kort);
-            
-            const symbolSpan = document.createElement('span');
-            symbolSpan.className = 'oppgave-symbol';
-            symbolSpan.textContent = item.symbol;
-            
-            const tekstSpan = document.createElement('span');
-            tekstSpan.textContent = item.ord;
-            
-            kort.appendChild(symbolSpan);
-            kort.appendChild(tekstSpan);
-            grid.appendChild(kort);
-        });
-}
-
-function filtrerDatabaseGrid() {
-    const sokTekst = document.getElementById('modal-sok')?.value || "";
-    fyllDatabaseGrid(sokTekst);
-}
-
-function veksleValgtOrd(item, element) {
-    const index = selectedAdvancedWords.findIndex(w => w.ord.toLowerCase() === item.ord.toLowerCase());
-    if (index > -1) {
-        selectedAdvancedWords.splice(index, 1);
-        element.classList.remove('valgt');
-    } else {
-        selectedAdvancedWords.push(item);
-        element.classList.add('valgt');
-    }
-    oppdaterValgtTeller();
-}
-
-function leggTilEgetOrd() {
-    const input = document.getElementById('custom-word-input');
-    if (!input || !input.value.trim()) return;
-    
-    const ordListe = input.value.split(/,|\n/).map(s => s.trim()).filter(Boolean);
-    ordListe.forEach(ord => {
-        if (!selectedAdvancedWords.some(w => w.ord.toLowerCase() === ord.toLowerCase())) {
-            selectedAdvancedWords.push({ ord: ord, symbol: finnSymbolForOrd(ord) });
-        }
-    });
-    
-    input.value = "";
-    oppdaterMineOrdListe();
-    oppdaterValgtTeller();
-    fyllDatabaseGrid();
-}
-
-function fjernEgetOrd(ordNavn) {
-    selectedAdvancedWords = selectedAdvancedWords.filter(w => w.ord.toLowerCase() !== ordNavn.toLowerCase());
-    oppdaterMineOrdListe();
-    oppdaterValgtTeller();
-    fyllDatabaseGrid();
-}
-
-function oppdaterMineOrdListe() {
-    const liste = document.getElementById('mine-ord-liste');
-    if (!liste) return;
-    liste.innerHTML = "";
-    
-    selectedAdvancedWords.forEach(item => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span>${item.symbol} ${item.ord}</span> <button type="button" onclick="fjernEgetOrd('${item.ord}')">Fjern</button>`;
-        liste.appendChild(li);
-    });
-}
-
-function oppdaterValgtTeller() {
-    const teller = document.getElementById('valgt-ord-teller');
-    if (teller) {
-        const antall = selectedAdvancedWords.length;
-        teller.textContent = antall === 0 ? "Ingen ord valgt ennå." : `${antall} ord valgt.`;
-    }
-}
-
-function lagreModalValg() {
-    lukkOrdModal();
-    if (typeof generateStaveKryss === 'function') {
-        generateStaveKryss(true);
-    }
-}
+// 3. Felles, alfabetisk sortert database som eksporteres
+export const substantivDb = [...openmojiDb, ...emojiDb]
+    .sort((a, b) => a.ord.localeCompare(b.ord, 'nb'));

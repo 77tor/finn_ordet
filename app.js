@@ -1,0 +1,317 @@
+// --- IMPORT ---
+import { openmojiMap } from './openmoji.js';
+
+// Konverterer openmojiMap-objektet til en array av objekter
+const substantivDb = Object.entries(openmojiMap).map(([sti, ord]) => ({
+    ord: ord,
+    symbol: `<img src="${sti}" alt="${ord}" style="width: 40px; height: 40px; vertical-align: middle;">`
+}));
+
+// --- TILSTAND OG VARIABLER ---
+let gjeldendeOrdListe = [];
+let selectedAdvancedWords = []; // Lagrer valgte ord fra modalen
+
+// --- HOVEDFUNKSJON: GENERER OPPGAVE ---
+export function generateStaveKryss(nyStokking = true) {
+    const outputContainer = document.getElementById('output-container');
+    const captureArea = document.getElementById('capture-area');
+    const placeholder = document.getElementById('placeholder-image');
+
+    if (!outputContainer) return;
+
+    const harEgneValg = selectedAdvancedWords.length > 0;
+
+    // 1. Bestem hvilke ord som skal brukes
+    if (nyStokking || gjeldendeOrdListe.length === 0) {
+        if (harEgneValg) {
+            gjeldendeOrdListe = [...selectedAdvancedWords];
+        } else {
+            const antall = 5;
+            const muligeOrd = [...substantivDb];
+            const stokket = muligeOrd.sort(() => 0.5 - Math.random());
+            gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
+        }
+    }
+
+    if (gjeldendeOrdListe.length === 0) return;
+
+    if (placeholder) placeholder.style.display = 'none';
+    if (captureArea) captureArea.style.display = 'block';
+
+    // 2. Hent stil-innstillinger
+    const fontFamily = document.getElementById('font-family')?.value || "'Trykkskrift', sans-serif";
+    const fontSize = (document.getElementById('font-size')?.value || "24") + "px";
+    const storeBokstaver = document.getElementById('toggle-upper')?.checked || false;
+    const fetSkrift = document.getElementById('toggle-bold')?.checked || false;
+    const visFasit = document.getElementById('toggle-fasit')?.checked || false;
+    const skalStokke = document.getElementById('toggle-shuffle')?.checked || false;
+
+    // 3. Lag lister for venstre (bilder) og høyre (ord)
+    const venstreBilder = [...gjeldendeOrdListe];
+    let hoyreOrd = [...gjeldendeOrdListe];
+
+    if (skalStokke) {
+        hoyreOrd.sort(() => 0.5 - Math.random());
+        if (hoyreOrd.length > 1) {
+            let like = true;
+            let forsok = 0;
+            while (like && forsok < 10) {
+                like = venstreBilder.some((item, index) => item.ord === hoyreOrd[index].ord);
+                if (like) hoyreOrd.sort(() => 0.5 - Math.random());
+                forsok++;
+            }
+        }
+    }
+
+    // 4. Bygg HTML-struktur
+    outputContainer.innerHTML = "";
+    outputContainer.style.fontFamily = fontFamily;
+
+    const tittelTekst = storeBokstaver ? "FINN RIKTIG ORD" : "Finn riktig ord";
+    const ingressTekst = storeBokstaver ? "TREKK STREK FRA BILDET TIL RIKTIG ORD." : "Trekk strek fra bildet til riktig ord.";
+
+    let html = `
+        <h1 style="font-family: ${fontFamily}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; text-align: center;">${tittelTekst}</h1>
+        <p style="text-align: center; margin-bottom: 40px;">${ingressTekst}</p>
+        <div style="display: flex; justify-content: space-between; width: 100%; padding: 0 20px; box-sizing: border-box;">
+            <!-- VENSTRE KOLONNE: BILDER -->
+            <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
+    `;
+
+    venstreBilder.forEach((item) => {
+        html += `
+            <div style="display: flex; align-items: center; gap: 15px; height: 50px;">
+                <span class="oppgave-symbol" style="display: flex; align-items: center; justify-content: center;">${item.symbol}</span>
+                <div style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
+            </div>
+        `;
+    });
+
+    html += `
+            </div>
+            <!-- HØYRE KOLONNE: ORD -->
+            <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
+    `;
+
+    hoyreOrd.forEach((item) => {
+        let visningsTekst = storeBokstaver ? item.ord.toUpperCase() : item.ord.toLowerCase();
+        
+        html += `
+            <div style="display: flex; align-items: center; gap: 15px; height: 50px;">
+                <div style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
+                <span style="font-size: ${fontSize}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; min-width: 120px;">
+                    ${visningsTekst}
+                    ${visFasit ? `<span style="color: #27ae60; font-size: 0.6em; margin-left: 5px;">(${item.ord})</span>` : ''}
+                </span>
+            </div>
+        `;
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    outputContainer.innerHTML = html;
+}
+
+// --- MODAL & FANE-FUNKSJONER ---
+export function apneOrdModal() {
+    const modal = document.getElementById('ord-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        byttFane('database');
+        lastInnDatabaseGrid();
+        oppdaterMineOrdListe();
+    }
+}
+
+export function lukkOrdModal() {
+    const modal = document.getElementById('ord-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+export function byttFane(faneNavn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    const valgtFane = document.getElementById(`fane-${faneNavn}`);
+    if (valgtFane) valgtFane.classList.add('active');
+
+    const knapper = document.querySelectorAll('.tab-btn');
+    if (faneNavn === 'database' && knapper[0]) knapper[0].classList.add('active');
+    if (faneNavn === 'egne' && knapper[1]) knapper[1].classList.add('active');
+}
+
+export function lastInnDatabaseGrid(filterTekst = '') {
+    const grid = document.getElementById('database-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    substantivDb.forEach(item => {
+        if (filterTekst && !item.ord.toLowerCase().includes(filterTekst.toLowerCase())) {
+            return;
+        }
+
+        const erValgt = selectedAdvancedWords.some(w => w.ord === item.ord);
+
+        const kort = document.createElement('div');
+        kort.className = `ord-kort ${erValgt ? 'selected' : ''}`;
+        kort.style.cssText = `
+            border: ${erValgt ? '2px solid #27ae60' : '1px solid #ccc'}; 
+            background-color: ${erValgt ? '#e8f8f5' : '#fff'};
+            padding: 10px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            text-align: center;
+        `;
+        
+        kort.innerHTML = `
+            <div style="font-size: 2rem;">${item.symbol}</div>
+            <div style="margin-top: 5px; font-weight: bold;">${item.ord}</div>
+        `;
+
+        kort.onclick = () => {
+            const idx = selectedAdvancedWords.findIndex(w => w.ord === item.ord);
+            if (idx > -1) {
+                selectedAdvancedWords.splice(idx, 1);
+            } else {
+                selectedAdvancedWords.push(item);
+            }
+            lastInnDatabaseGrid(filterTekst);
+            oppdaterMineOrdListe();
+        };
+
+        grid.appendChild(kort);
+    });
+}
+
+export function filtrerDatabaseGrid() {
+    const sokTekst = document.getElementById('modal-sok')?.value || '';
+    lastInnDatabaseGrid(sokTekst);
+}
+
+export function leggTilEgetOrd() {
+    const input = document.getElementById('custom-word-input');
+    const bildeInput = document.getElementById('custom-image-upload');
+    if (!input || !input.value.trim()) return;
+
+    const ordListe = input.value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+    const bildeFil = bildeInput?.files[0];
+
+    if (bildeFil) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            ordListe.forEach(ord => {
+                selectedAdvancedWords.push({
+                    ord: ord,
+                    symbol: `<img src="${e.target.result}" alt="${ord}" style="width: 40px; height: 40px; object-fit: contain;">`
+                });
+            });
+            input.value = '';
+            if (bildeInput) bildeInput.value = '';
+            oppdaterMineOrdListe();
+        };
+        reader.readAsDataURL(bildeFil);
+    } else {
+        ordListe.forEach(ord => {
+            selectedAdvancedWords.push({
+                ord: ord,
+                symbol: `<span style="font-size: 24px; font-weight: bold;">📝</span>`
+            });
+        });
+        input.value = '';
+        oppdaterMineOrdListe();
+    }
+}
+
+function oppdaterMineOrdListe() {
+    const liste = document.getElementById('mine-ord-liste');
+    if (!liste) return;
+
+    liste.innerHTML = '';
+    selectedAdvancedWords.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.style.cssText = "display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;";
+        li.innerHTML = `
+            <span>${item.symbol} ${item.ord}</span>
+            <button style="background: #e74c3c; color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer;">X</button>
+        `;
+        li.querySelector('button').onclick = () => {
+            selectedAdvancedWords.splice(index, 1);
+            oppdaterMineOrdListe();
+            lastInnDatabaseGrid();
+        };
+        liste.appendChild(li);
+    });
+}
+
+export function lagreModalValg() {
+    lukkOrdModal();
+    generateStaveKryss(true);
+}
+
+// --- SIDEMENY & SYSTEMFUNKSJONER ---
+export function toggleMenu() {
+    const dropdown = document.getElementById("myDropdown");
+    if (dropdown) dropdown.classList.toggle("show");
+}
+
+export function resetForm() {
+    selectedAdvancedWords = [];
+    gjeldendeOrdListe = [];
+    
+    const captureArea = document.getElementById('capture-area');
+    const placeholder = document.getElementById('placeholder-image');
+    
+    if (captureArea) captureArea.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
+}
+
+// Lukk meny om man klikker utenfor
+window.onclick = function(event) {
+    if (!event.target.matches('.hamburger') && !event.target.matches('.hamburger span')) {
+        const dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+};
+
+// --- EKSPOSER ALL FUNKSJONALITET TIL GLOBAL SCOPE (WINDOW) ---
+window.generateStaveKryss = generateStaveKryss;
+window.toggleMenu = toggleMenu;
+window.resetForm = resetForm;
+window.apneOrdModal = apneOrdModal;
+window.lukkOrdModal = lukkOrdModal;
+window.byttFane = byttFane;
+window.filtrerDatabaseGrid = filtrerDatabaseGrid;
+window.leggTilEgetOrd = leggTilEgetOrd;
+window.lagreModalValg = lagreModalValg;
+
+// --- CRITICAL FIX: AUTOMATISK START NÅR SIDEN LASTES ---
+document.addEventListener("DOMContentLoaded", () => {
+    // Genererer første oppgave automatisk
+    generateStaveKryss(true);
+});
+
+// Hvis DOM allerede er lastet inn når modulen kjører:
+if (document.readyState === "complete" || document.readyState === "interactive") {
+    generateStaveKryss(true);
+}
+
+// --- AUTOMATISK INITIALISERING VED LASTING ---
+function initApp() {
+    // Generer oppgave med en gang siden er klar
+    generateStaveKryss(true);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}

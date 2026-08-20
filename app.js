@@ -20,7 +20,6 @@ function stokkeHoyreKolonne(skalStokke) {
     }
 }
 
-
 export function generateStaveKryss(nyStokking = true) {
     const outputContainer = document.getElementById('output-container');
     const captureArea = document.getElementById('capture-area');
@@ -28,23 +27,38 @@ export function generateStaveKryss(nyStokking = true) {
 
     if (!outputContainer) return;
 
+    // 1. Hent bildestørrelse og finn maks grense
+    const bildeStorrelseValg = document.getElementById('image-size')?.value || "55";
+    let maksAntall = 12; // Standard (Middels)
+
+    if (bildeStorrelseValg === "70") {
+        maksAntall = 10; // Stor
+    } else if (bildeStorrelseValg === "40") {
+        maksAntall = 15; // Liten
+    }
+
     const harEgneValg = selectedAdvancedWords.length > 0;
     const skalStokke = document.getElementById('toggle-shuffle')?.checked ?? true;
 
-    // 1. Generer eller hent venstre liste
+    // 2. Generer eller hent venstre liste
     if (nyStokking || gjeldendeOrdListe.length === 0) {
         if (harEgneValg) {
-            gjeldendeOrdListe = [...selectedAdvancedWords];
+            // Begrens egne valgte ord til maksgrensen for valgt bildestørrelse
+            gjeldendeOrdListe = selectedAdvancedWords.slice(0, maksAntall);
         } else {
-            const antall = 6; // Sett fast antall ord her (f.eks. 6)
             const muligeOrd = [...substantivDb];
             const stokket = muligeOrd.sort(() => 0.5 - Math.random());
-            gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
+            // Begrens automatisk genererte ord til maksgrensen
+            gjeldendeOrdListe = stokket.slice(0, Math.min(maksAntall, stokket.length));
         }
 
-        // Generer ny høyre kolonne direkte basert på gjeldendeOrdListe
         stokkeHoyreKolonne(skalStokke);
     } else {
+        // Hvis listen allerede finnes, pass på at den ikke overskrider maksgrensen
+        if (gjeldendeOrdListe.length > maksAntall) {
+            gjeldendeOrdListe = gjeldendeOrdListe.slice(0, maksAntall);
+        }
+
         if (!skalStokke) {
             gjeldendeHoyreOrd = [...gjeldendeOrdListe];
         } else {
@@ -54,6 +68,7 @@ export function generateStaveKryss(nyStokking = true) {
             }
         }
     }
+
 
     // TVING AT BEGGE LISTENE HAR SAMME LENGTH
     const antallOrd = gjeldendeOrdListe.length;

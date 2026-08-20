@@ -28,11 +28,9 @@
                 <a href="https://77tor.github.io/bingo/" target="_self">
                     <img src="bingo_02.png" class="menu-icon" alt="Bingo"> Bingo
                 </a>
-
                 <a href="https://77tor.github.io/finn_ordet/" class="menu-item-disabled">
                     <img src="finn_ordet_01.svg" class="menu-icon" alt="Finn ordet"> Finn ordet
                 </a>
-
                 <a href="https://77tor.github.io/gitter/" target="_self">
                     <img src="gitter_02.png" class="menu-icon" alt="Gitter-ord"> Gitter-ord
                 </a>
@@ -42,11 +40,9 @@
                 <a href="https://77tor.github.io/ord-sok/" target="_self"> 
                     <img src="ord-sok.png" class="menu-icon" alt="Ordsøk"> Ordsøk
                 </a>
-
                 <a href="https://77tor.github.io/puslehistorier/" target="_self"> 
                     <img src="pusle_02.png" class="menu-icon" alt="Puslehistorier"> Puslehistorier
                 </a>
-
                 <a href="https://77tor.github.io/Silhuettord/" target="_self">
                     <img src="silhuett-ord_05.png" class="menu-icon" alt="Silhuett-ord"> Silhuett-ord
                 </a>
@@ -201,10 +197,15 @@
             </div>
         </div>
 
-        <!-- BUNNBAR MED KNAPPER -->
-        <div class="modal-footer">
-            <button onclick="lukkOrdModal()" class="action-btn" style="background: #718096; width: auto;">Avbryt</button>
-            <button onclick="lagreModalValg()" class="action-btn" style="background: #27ae60; width: auto;">Bruk valgte ord</button>
+<!-- BUNNBAR MED KNAPPER OG KREDITERING -->
+        <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.75rem; color: #718096;">
+                Illustrasjoner fra <a href="https://example.com" target="_blank" style="color: #718096; text-decoration: underline;">Kildens Navn</a>
+            </span>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="lukkOrdModal()" class="action-btn" style="background: #718096; width: auto;">Avbryt</button>
+                <button onclick="lagreModalValg()" class="action-btn" style="background: #27ae60; width: auto;">Bruk valgte ord</button>
+            </div>
         </div>
 
     </div>

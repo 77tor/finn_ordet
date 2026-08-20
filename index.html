@@ -32,7 +32,7 @@
                     <img src="gitter_02.png" class="menu-icon" alt="Gitter-ord"> Gitter-ord
                 </a>
                 <a href="https://77tor.github.io/les_og_skriv/" target="_self">
-                    <img src="les_skriv_03.png" class="menu-icon" alt="Les og skriv"> Les og skriv
+                    <img src="Bilder/les_skriv_03.png" class="menu-icon" alt="Les og skriv"> Les og skriv
                 </a>
                 <a href="https://77tor.github.io/ord-sok/" target="_self"> 
                     <img src="ord-sok.png" class="menu-icon" alt="Ordsøk"> Ordsøk
@@ -51,7 +51,7 @@
     <!-- Skriftstørrelse -->
     <div class="control-item">
         <label for="font-size">Skriftstørrelse:</label>
-        <select id="font-size" onchange="generateStaveKryss(false)">
+        <select id="font-size" onchange="oppdaterVisning()">
             <option value="20">Liten</option>
             <option value="24" selected>Medium</option>
             <option value="28">Stor</option>
@@ -62,7 +62,7 @@
     <!-- Font-valg -->
     <div class="control-item">
         <label for="font-family">Skrifttype:</label>
-        <select id="font-family" onchange="generateStaveKryss(false)">
+        <select id="font-family" onchange="oppdaterVisning()">
             <option value="'Trykkskrift', sans-serif">Trykkskrift</option>
             <option value="'Skogstavskrift', sans-serif">Skogstavskrift</option>
             <option value="'Andika', sans-serif">Andika</option>
@@ -73,7 +73,7 @@
     <div class="control-item">
         <span>STORE BOKSTAVER</span>
         <label class="switch">
-            <input type="checkbox" id="toggle-upper" onchange="generateStaveKryss(false)">
+            <input type="checkbox" id="toggle-upper" onchange="oppdaterVisning()">
             <span class="slider"></span>
         </label>
     </div>
@@ -81,7 +81,7 @@
     <div class="control-item">
         <span>Fet skrift</span>
         <label class="switch">
-            <input type="checkbox" id="toggle-bold" onchange="generateStaveKryss(false)">
+            <input type="checkbox" id="toggle-bold" onchange="oppdaterVisning()">
             <span class="slider"></span>
         </label>
     </div>
@@ -89,23 +89,23 @@
     <div class="control-item">
         <span>Vis fasit på arket</span>
         <label class="switch">
-            <input type="checkbox" id="toggle-fasit" onchange="generateStaveKryss(false)">
+            <input type="checkbox" id="toggle-fasit" onchange="oppdaterVisning()">
             <span class="slider"></span>
         </label>
     </div>
 
-    <!-- Ny bryter: Stokke om rekkefølge -->
+    <!-- Stokke om rekkefølge -->
     <div class="control-item">
         <span>Stokke om rekkefølge</span>
         <label class="switch">
-            <input type="checkbox" id="toggle-shuffle" onchange="generateStaveKryss(false)">
+            <input type="checkbox" id="toggle-shuffle" onchange="oppdaterVisning()">
             <span class="slider"></span>
         </label>
     </div>
 
     <br>
 
-    <!-- Hovedknapper nederst (tre på rad) -->
+    <!-- Hovedknapper nederst -->
     <div style="display: flex; gap: 6px; margin-top: auto;">
         <button class="action-btn" style="background-color: #27ae60; flex: 1; padding: 10px 4px;" onclick="apneOrdModal()">
             Velg ord
@@ -118,6 +118,7 @@
         </button>
     </div>
 </div>
+
 <div class="main-content">
     <div id="placeholder-image" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 80vh;">
         <img src="Bilder/finn_ordet_bg.png" alt="Velkomstbilde" style="max-width: 400px; opacity: 0.15; filter: grayscale(100%);">
@@ -173,12 +174,39 @@
 
         <div class="modal-footer">
             <button class="action-btn" style="background-color: #7f8c8d;" onclick="lukkOrdModal()">Avbryt</button>
-            <button class="action-btn" style="background-color: var(--accent-green);" onclick="lagreModalValg()">Bruk valgte ord</button>
+            <button class="action-btn" style="background-color: #27ae60;" onclick="lagreModalValg()">Bruk valgte ord</button>
         </div>
     </div>
 </div>
 
-<!-- Koble til app.js som en module -->
+<!-- Koble til JavaScript-filer -->
+<script type="module" src="openmoji.js"></script>
 <script type="module" src="app.js"></script>
+
+<!-- Eksponer modul-funksjoner til window så onclick i HTML finner dem -->
+<script type="module">
+    import { 
+        apneOrdModal, 
+        lukkOrdModal, 
+        byttFane, 
+        filtrerDatabaseGrid, 
+        leggTilEgetOrd, 
+        lagreModalValg, 
+        oppdaterVisning, 
+        resetForm, 
+        toggleMenu 
+    } from './app.js';
+
+    window.apneOrdModal = apneOrdModal;
+    window.lukkOrdModal = lukkOrdModal;
+    window.byttFane = byttFane;
+    window.filtrerDatabaseGrid = filtrerDatabaseGrid;
+    window.leggTilEgetOrd = leggTilEgetOrd;
+    window.lagreModalValg = lagreModalValg;
+    window.oppdaterVisning = oppdaterVisning;
+    window.resetForm = resetForm;
+    window.toggleMenu = toggleMenu;
+</script>
+
 </body>
 </html>

@@ -1,6 +1,5 @@
-
 // --- IMPORT ---
-import { substantivDb } from './bilder.js';
+import { openmojiList } from './openmoji.js';
 
 // --- TILSTAND OG VARIABLER ---
 let gjeldendeOrdListe = [];
@@ -16,15 +15,21 @@ export function generateStaveKryss(nyStokking = true) {
 
     const harEgneValg = selectedAdvancedWords.length > 0;
 
-    // 1. Bestem hvilke ord som skal brukes
+    // Bestem hvilke ord som skal brukes
     if (nyStokking || gjeldendeOrdListe.length === 0) {
         if (harEgneValg) {
             gjeldendeOrdListe = [...selectedAdvancedWords];
         } else {
             const antall = 5;
-            const muligeOrd = [...substantivDb];
+            const muligeOrd = [...openmojiList];
             const stokket = muligeOrd.sort(() => 0.5 - Math.random());
-            gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
+            
+            // Konverter fra openmoji-format til internt format
+            gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length)).map(item => ({
+                ord: item.label,
+                path: item.path,
+                symbol: `<img src="${item.path}" alt="${item.label}" style="width: 45px; height: 45px; object-fit: contain;">`
+            }));
         }
     }
 
@@ -144,12 +149,12 @@ export function lastInnDatabaseGrid(filterTekst = '') {
 
     grid.innerHTML = '';
 
-    substantivDb.forEach(item => {
-        if (filterTekst && !item.ord.toLowerCase().includes(filterTekst.toLowerCase())) {
+    openmojiList.forEach(item => {
+        if (filterTekst && !item.label.toLowerCase().includes(filterTekst.toLowerCase())) {
             return;
         }
 
-        const erValgt = selectedAdvancedWords.some(w => w.ord === item.ord);
+        const erValgt = selectedAdvancedWords.some(w => w.path === item.path);
 
         const kort = document.createElement('div');
         kort.className = `ord-kort ${erValgt ? 'selected' : ''}`;
@@ -163,16 +168,20 @@ export function lastInnDatabaseGrid(filterTekst = '') {
         `;
         
         kort.innerHTML = `
-            <div style="font-size: 2rem;">${item.symbol}</div>
-            <div style="margin-top: 5px; font-weight: bold;">${item.ord}</div>
+            <img src="${item.path}" alt="${item.label}" style="width: 40px; height: 40px; object-fit: contain;">
+            <div style="margin-top: 5px; font-weight: bold; font-size: 0.9rem;">${item.label}</div>
         `;
 
         kort.onclick = () => {
-            const idx = selectedAdvancedWords.findIndex(w => w.ord === item.ord);
+            const idx = selectedAdvancedWords.findIndex(w => w.path === item.path);
             if (idx > -1) {
                 selectedAdvancedWords.splice(idx, 1);
             } else {
-                selectedAdvancedWords.push(item);
+                selectedAdvancedWords.push({
+                    ord: item.label,
+                    path: item.path,
+                    symbol: `<img src="${item.path}" alt="${item.label}" style="width: 45px; height: 45px; object-fit: contain;">`
+                });
             }
             lastInnDatabaseGrid(filterTekst);
             oppdaterMineOrdListe();
@@ -198,9 +207,11 @@ export function leggTilEgetOrd() {
     if (bildeFil) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            ordListe.forEach(ord => {
+            ordListe.forEach((ord, i) => {
+                const uniquePath = `custom_${Date.now()}_${i}`;
                 selectedAdvancedWords.push({
                     ord: ord,
+                    path: uniquePath,
                     symbol: `<img src="${e.target.result}" alt="${ord}" style="width: 40px; height: 40px; object-fit: contain;">`
                 });
             });
@@ -210,9 +221,11 @@ export function leggTilEgetOrd() {
         };
         reader.readAsDataURL(bildeFil);
     } else {
-        ordListe.forEach(ord => {
+        ordListe.forEach((ord, i) => {
+            const uniquePath = `custom_text_${Date.now()}_${i}`;
             selectedAdvancedWords.push({
                 ord: ord,
+                path: uniquePath,
                 symbol: `<span style="font-size: 24px; font-weight: bold;">📝</span>`
             });
         });
@@ -279,6 +292,7 @@ window.onclick = function(event) {
 
 // --- EKSPOSER ALL FUNKSJONALITET TIL GLOBAL SCOPE (WINDOW) ---
 window.generateStaveKryss = generateStaveKryss;
+window.oppdaterVisning = () => generateStaveKryss(false); // Koblet til HTML-bryterne!
 window.toggleMenu = toggleMenu;
 window.resetForm = resetForm;
 window.apneOrdModal = apneOrdModal;

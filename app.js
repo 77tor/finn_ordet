@@ -4,9 +4,6 @@ import { substantivDb } from './bilder.js';
 // --- TILSTAND OG VARIABLER ---
 let gjeldendeOrdListe = [];
 let selectedAdvancedWords = []; // Lagrer valgte ord fra modalen
-
-// Deklareres i toppen av app.js
-let gjeldendeOrdListe = [];
 let gjeldendeHoyreOrd = []; // Lagrer høyre kolonne så rekkefølgen beholdes
 
 export function generateStaveKryss(nyStokking = true) {
@@ -121,8 +118,7 @@ export function generateStaveKryss(nyStokking = true) {
     }
 }
 
-
-// --- HJELPEFUNKSJON FOR Å TEGNE STRERER ---
+// --- HJELPEFUNKSJON FOR Å TEGNE STREKER ---
 function tegnerFasitStreker() {
     const container = document.getElementById('output-container');
     const svg = document.getElementById('fasit-svg');
@@ -136,28 +132,25 @@ function tegnerFasitStreker() {
 
     venstrePunkter.forEach(vPunkt => {
         const ord = vPunkt.getAttribute('data-ord');
-        // Finn matchende punkt til høyre med samme ord
         const hPunkt = Array.from(hoyrePunkter).find(h => h.getAttribute('data-ord') === ord);
 
         if (hPunkt) {
             const r1 = vPunkt.getBoundingClientRect();
             const r2 = hPunkt.getBoundingClientRect();
 
-            // Regn ut senter i sirkel relativt til containeren
             const x1 = (r1.left + r1.width / 2) - containerRect.left;
             const y1 = (r1.top + r1.height / 2) - containerRect.top;
             const x2 = (r2.left + r2.width / 2) - containerRect.left;
             const y2 = (r2.top + r2.height / 2) - containerRect.top;
 
-            // Opprett en SVG-linje
             const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
             line.setAttribute("x1", x1);
             line.setAttribute("y1", y1);
             line.setAttribute("x2", x2);
             line.setAttribute("y2", y2);
-            line.setAttribute("stroke", "#27ae60"); // Grønn fasitfarge
+            line.setAttribute("stroke", "#27ae60");
             line.setAttribute("stroke-width", "3");
-            line.setAttribute("stroke-dasharray", "6,6"); // Stiplet linje
+            line.setAttribute("stroke-dasharray", "6,6");
             line.setAttribute("stroke-linecap", "round");
 
             svg.appendChild(line);
@@ -329,7 +322,6 @@ export function resetForm() {
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-    // Sett bryteren for "Stokke om rekkefølge" til på som standard
     const shuffleToggle = document.getElementById('toggle-shuffle');
     if (shuffleToggle) shuffleToggle.checked = true;
 
@@ -352,7 +344,7 @@ window.onclick = function(event) {
 
 // --- EKSPOSER ALL FUNKSJONALITET TIL GLOBAL SCOPE (WINDOW) ---
 window.generateStaveKryss = generateStaveKryss;
-window.oppdaterVisning = () => generateStaveKryss(false); // Koblet til HTML-bryterne!
+window.oppdaterVisning = () => generateStaveKryss(false);
 window.toggleMenu = toggleMenu;
 window.resetForm = resetForm;
 window.apneOrdModal = apneOrdModal;

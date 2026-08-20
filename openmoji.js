@@ -331,7 +331,6 @@ export const openmojiList = [
   { path: "./Bilder/1F360.svg", label: "søtpotet" },
   { path: "./Bilder/1F37D.svg", label: "tallerken" },
   { path: "./Bilder/1F32E.svg", label: "taco" },
-  { path: "./Bilder/1FAA7.svg", label: "tannbørste" },
   { path: "./Bilder/1F9B7.svg", label: "tann" },
   { path: "./Bilder/1F375.svg", label: "te" },
   { path: "./Bilder/1FAD6.svg", label: "tekanne" },

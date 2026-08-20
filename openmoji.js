@@ -1,5 +1,4 @@
 export const openmojiList = [
-  { path: "./Bilder/1F952.svg", label: "agurk" },
   { path: "./Bilder/1F691.svg", label: "ambulanse" },
   { path: "./Bilder/1F34D.svg", label: "ananas" },
   { path: "./Bilder/2693.svg", label: "anker" },
@@ -84,7 +83,7 @@ export const openmojiList = [
   { path: "./Bilder/1F3A3.svg", label: "fiskestang" },
   { path: "./Bilder/1F3BB.svg", label: "fiolin" },
   { path: "./Bilder/1FAB3.svg", label: "insekt" },
-  { path: "./Bilder/1F3A9.svg", label: "hatt" },
+  { path: "./Bilder/1F3A9.svg", label: "flosshatt" },
   { path: "./Bilder/1FA88.svg", label: "fløyte" },
   { path: "./Bilder/26F2.svg", label: "fontene" },
   { path: "./Bilder/1F463.svg", label: "fotspor" },

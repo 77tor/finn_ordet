@@ -56,10 +56,10 @@ const emojiDb = [
     symbol: `<span style="font-size: 28px; line-height: 1;">${item.symbol}</span>`
 }));
 
-// 2. OpenMoji-bildene (Kartlegges fra openmojiList)
+// 2. OpenMoji-bildene
 const openmojiDb = openmojiList.map(item => ({
     ord: item.label,
-    symbol: `<img src="${item.path.toLowerCase()}" alt="${item.label}" style="width: 40px; height: 40px; object-fit: contain;">`
+    symbol: `<img src="${item.path}" alt="${item.label}" style="width: 40px; height: 40px; object-fit: contain;">`
 }));
 
 // 3. Felles, alfabetisk sortert database som eksporteres

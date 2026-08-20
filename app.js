@@ -68,6 +68,10 @@ export function generateStaveKryss(nyStokking = true) {
     const storeBokstaver = document.getElementById('toggle-upper')?.checked || false;
     const fetSkrift = document.getElementById('toggle-bold')?.checked || false;
     const visFasit = document.getElementById('toggle-fasit')?.checked || false;
+    
+    // Hent valgt bildestørrelse i piksler (default 55px hvis ikke valgt)
+    const bildeStorrelsePx = document.getElementById('image-size')?.value || "55";
+    const bildeStorrelse = bildeStorrelsePx + "px";
 
     // Bruk de lagrede listene
     const venstreBilder = gjeldendeOrdListe;
@@ -93,8 +97,10 @@ export function generateStaveKryss(nyStokking = true) {
 
     venstreBilder.forEach((item) => {
         html += `
-            <div style="display: flex; align-items: center; gap: 15px; height: 50px;">
-                <span class="oppgave-symbol" style="display: flex; align-items: center; justify-content: center;">${item.symbol}</span>
+            <div style="display: flex; align-items: center; gap: 15px; min-height: ${bildeStorrelse};">
+                <span class="oppgave-symbol" style="display: flex; align-items: center; justify-content: center; width: ${bildeStorrelse}; height: ${bildeStorrelse}; font-size: calc(${bildeStorrelsePx}px * 0.75);">
+                    ${item.symbol}
+                </span>
                 <div class="fasit-punkt-venstre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
             </div>
         `;
@@ -109,7 +115,7 @@ export function generateStaveKryss(nyStokking = true) {
         let visningsTekst = storeBokstaver ? item.ord.toUpperCase() : item.ord.toLowerCase();
         
         html += `
-            <div style="display: flex; align-items: center; gap: 15px; height: 50px;">
+            <div style="display: flex; align-items: center; gap: 15px; min-height: ${bildeStorrelse};">
                 <div class="fasit-punkt-hoyre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
                 <span style="font-size: ${fontSize}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; min-width: 120px;">
                     ${visningsTekst}

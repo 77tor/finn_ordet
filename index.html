@@ -48,6 +48,16 @@
         <h2 style="margin: 0; flex-grow: 1; text-align: center; letter-spacing: 1px;">Dra strek</h2>
     </div>
 
+    <!-- Bildestørrelse -->
+<div class="control-group">
+    <label for="image-size">Bildestørrelse:</label>
+    <select id="image-size" onchange="oppdaterVisning()">
+        <option value="40">Liten</option>
+        <option value="55" selected>Middels</option>
+        <option value="70">Stor</option>
+    </select>
+</div>
+
     <!-- Skriftstørrelse -->
     <div class="control-item">
         <label for="font-size">Skriftstørrelse:</label>

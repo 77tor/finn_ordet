@@ -359,9 +359,15 @@ export function resetForm() {
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
+    // Sett "Stokke om rekkefølge" til PÅ
     const shuffleToggle = document.getElementById('toggle-shuffle');
     if (shuffleToggle) shuffleToggle.checked = true;
 
+    // Slå AV "Vis fasit på arket"
+    const fasitToggle = document.getElementById('toggle-fasit');
+    if (fasitToggle) fasitToggle.checked = false;
+
+    // Tøm tekstfelt i modalen
     const customInput = document.getElementById('custom-word-input');
     if (customInput) customInput.value = '';
 }

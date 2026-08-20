@@ -40,37 +40,27 @@ export function generateStaveKryss(nyStokking = true) {
     const harEgneValg = selectedAdvancedWords.length > 0;
     const skalStokke = document.getElementById('toggle-shuffle')?.checked ?? true;
 
-    // 2. Generer eller hent venstre liste
-    if (nyStokking || gjeldendeOrdListe.length === 0) {
-        if (harEgneValg) {
-            // Begrens egne valgte ord til maksgrensen for valgt bildestørrelse
-            gjeldendeOrdListe = selectedAdvancedWords.slice(0, maksAntall);
-        } else {
+    // 2. Generer eller hent venstre liste (Uten å overskrive eller slette valgte ord)
+    if (harEgneValg) {
+        // Hent ut inntil maksAntall fra den komplette valglisten
+        gjeldendeOrdListe = selectedAdvancedWords.slice(0, maksAntall);
+    } else {
+        if (nyStokking || gjeldendeOrdListe.length === 0) {
             const muligeOrd = [...substantivDb];
             const stokket = muligeOrd.sort(() => 0.5 - Math.random());
-            // Begrens automatisk genererte ord til maksgrensen
             gjeldendeOrdListe = stokket.slice(0, Math.min(maksAntall, stokket.length));
-        }
-
-        stokkeHoyreKolonne(skalStokke);
-    } else {
-        // Hvis listen allerede finnes, pass på at den ikke overskrider maksgrensen
-        if (gjeldendeOrdListe.length > maksAntall) {
-            gjeldendeOrdListe = gjeldendeOrdListe.slice(0, maksAntall);
-        }
-
-        if (!skalStokke) {
-            gjeldendeHoyreOrd = [...gjeldendeOrdListe];
         } else {
-            const erLiktSortert = gjeldendeOrdListe.every((item, idx) => item.ord === gjeldendeHoyreOrd[idx]?.ord);
-            if (erLiktSortert) {
-                stokkeHoyreKolonne(true);
+            // Hvis brukeren bytter bildestørrelse på auto-genererte ord
+            if (gjeldendeOrdListe.length > maksAntall) {
+                gjeldendeOrdListe = gjeldendeOrdListe.slice(0, maksAntall);
             }
         }
     }
 
+    // 3. Oppdater høyre side basert på ny venstreside
+    stokkeHoyreKolonne(skalStokke);
 
-    // TVING AT BEGGE LISTENE HAR SAMME LENGTH
+    // TVING AT BEGGE LISTENE HAR SAMME LENGDE
     const antallOrd = gjeldendeOrdListe.length;
     const hoyreOrdAvskåret = gjeldendeHoyreOrd.slice(0, antallOrd);
 
@@ -79,7 +69,7 @@ export function generateStaveKryss(nyStokking = true) {
     if (placeholder) placeholder.style.display = 'none';
     if (captureArea) captureArea.style.display = 'block';
 
-    // 2. Hent stil-innstillinger
+    // 4. Hent stil-innstillinger
     const fontFamily = document.getElementById('font-family')?.value || "'Trykkskrift', sans-serif";
     const fontSize = (document.getElementById('font-size')?.value || "24") + "px";
     const storeBokstaver = document.getElementById('toggle-upper')?.checked || false;
@@ -89,7 +79,7 @@ export function generateStaveKryss(nyStokking = true) {
     const bildeStorrelsePx = document.getElementById('image-size')?.value || "55";
     const bildeStorrelse = bildeStorrelsePx + "px";
 
-    // 3. Bygg HTML-struktur
+    // 5. Bygg HTML-struktur
     outputContainer.innerHTML = "";
     outputContainer.style.fontFamily = fontFamily;
     outputContainer.style.position = "relative";
@@ -147,12 +137,11 @@ export function generateStaveKryss(nyStokking = true) {
 
     outputContainer.innerHTML = html;
 
-    // 4. Tegn fasitstreker dersom bryteren er aktivert
+    // 6. Tegn fasitstreker dersom bryteren er aktivert
     if (visFasit) {
         setTimeout(tegnerFasitStreker, 50);
     }
 }
-
 
 // --- HJELPEFUNKSJON FOR Å TEGNE STREKER ---
 function tegnerFasitStreker() {
@@ -162,18 +151,9 @@ function tegnerFasitStreker() {
 
     svg.innerHTML = ''; // Tøm tidligere streker
 
-    // Palette med 10 klare, unike farger
     const farger = [
-        '#e74c3c', // Rød
-        '#3498db', // Blå
-        '#2ecc71', // Grønn
-        '#9b59b6', // Lilla
-        '#e67e22', // Oransje
-        '#1abc9c', // Turkis
-        '#e84393', // Rosa
-        '#f1c40f', // Gul/Gull
-        '#34495e', // Mørk skiferblå
-        '#d35400'  // Mørk oransje/brun
+        '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#e67e22',
+        '#1abc9c', '#e84393', '#f1c40f', '#34495e', '#d35400'
     ];
 
     const containerRect = container.getBoundingClientRect();
@@ -371,7 +351,6 @@ function oppdaterMineOrdListe() {
     });
 }
 
-
 export function lagreModalValg() {
     lukkOrdModal();
     generateStaveKryss(true);
@@ -393,21 +372,17 @@ export function resetForm() {
     const outputContainer = document.getElementById('output-container');
     const fasitSvg = document.getElementById('fasit-svg');
     
-    // Tøm alt innhold
     if (outputContainer) outputContainer.innerHTML = '';
     if (fasitSvg) fasitSvg.innerHTML = '';
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-    // Sett "Stokke om rekkefølge" til PÅ
     const shuffleToggle = document.getElementById('toggle-shuffle');
     if (shuffleToggle) shuffleToggle.checked = true;
 
-    // Slå AV "Vis fasit på arket"
     const fasitToggle = document.getElementById('toggle-fasit');
     if (fasitToggle) fasitToggle.checked = false;
 
-    // Tøm tekstfelt i modalen
     const customInput = document.getElementById('custom-word-input');
     if (customInput) customInput.value = '';
 }

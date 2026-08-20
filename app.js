@@ -5,7 +5,10 @@ import { substantivDb } from './bilder.js';
 let gjeldendeOrdListe = [];
 let selectedAdvancedWords = []; // Lagrer valgte ord fra modalen
 
-// --- HOVEDFUNKSJON: GENERER OPPGAVE ---
+// Deklareres i toppen av app.js
+let gjeldendeOrdListe = [];
+let gjeldendeHoyreOrd = []; // Lagrer høyre kolonne så rekkefølgen beholdes
+
 export function generateStaveKryss(nyStokking = true) {
     const outputContainer = document.getElementById('output-container');
     const captureArea = document.getElementById('capture-area');
@@ -15,7 +18,7 @@ export function generateStaveKryss(nyStokking = true) {
 
     const harEgneValg = selectedAdvancedWords.length > 0;
 
-    // Bestem hvilke ord som skal brukes
+    // 1. Generer eller hent venstre liste
     if (nyStokking || gjeldendeOrdListe.length === 0) {
         if (harEgneValg) {
             gjeldendeOrdListe = [...selectedAdvancedWords];
@@ -24,6 +27,23 @@ export function generateStaveKryss(nyStokking = true) {
             const muligeOrd = [...substantivDb];
             const stokket = muligeOrd.sort(() => 0.5 - Math.random());
             gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
+        }
+
+        // Generer ny høyre kolonne KUN når det er ny stokking
+        const skalStokke = document.getElementById('toggle-shuffle')?.checked ?? true;
+        gjeldendeHoyreOrd = [...gjeldendeOrdListe];
+
+        if (skalStokke) {
+            gjeldendeHoyreOrd.sort(() => 0.5 - Math.random());
+            if (gjeldendeHoyreOrd.length > 1) {
+                let like = true;
+                let forsok = 0;
+                while (like && forsok < 10) {
+                    like = gjeldendeOrdListe.some((item, index) => item.ord === gjeldendeHoyreOrd[index].ord);
+                    if (like) gjeldendeHoyreOrd.sort(() => 0.5 - Math.random());
+                    forsok++;
+                }
+            }
         }
     }
 
@@ -38,29 +58,15 @@ export function generateStaveKryss(nyStokking = true) {
     const storeBokstaver = document.getElementById('toggle-upper')?.checked || false;
     const fetSkrift = document.getElementById('toggle-bold')?.checked || false;
     const visFasit = document.getElementById('toggle-fasit')?.checked || false;
-    const skalStokke = document.getElementById('toggle-shuffle')?.checked || false;
 
-    // 3. Lag lister for venstre (bilder) og høyre (ord)
-    const venstreBilder = [...gjeldendeOrdListe];
-    let hoyreOrd = [...gjeldendeOrdListe];
+    // Bruk de lagrede listene
+    const venstreBilder = gjeldendeOrdListe;
+    const hoyreOrd = gjeldendeHoyreOrd;
 
-    if (skalStokke) {
-        hoyreOrd.sort(() => 0.5 - Math.random());
-        if (hoyreOrd.length > 1) {
-            let like = true;
-            let forsok = 0;
-            while (like && forsok < 10) {
-                like = venstreBilder.some((item, index) => item.ord === hoyreOrd[index].ord);
-                if (like) hoyreOrd.sort(() => 0.5 - Math.random());
-                forsok++;
-            }
-        }
-    }
-
-    // 4. Bygg HTML-struktur
+    // 3. Bygg HTML-struktur
     outputContainer.innerHTML = "";
     outputContainer.style.fontFamily = fontFamily;
-    outputContainer.style.position = "relative"; // Viktig for SVG-posisjonering
+    outputContainer.style.position = "relative";
 
     const tittelTekst = storeBokstaver ? "FINN RIKTIG ORD" : "Finn riktig ord";
     const ingressTekst = storeBokstaver ? "TREKK STREK FRA BILDET TIL RIKTIG ORD." : "Trekk strek fra bildet til riktig ord.";
@@ -69,15 +75,13 @@ export function generateStaveKryss(nyStokking = true) {
         <h1 style="font-family: ${fontFamily}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; text-align: center;">${tittelTekst}</h1>
         <p style="text-align: center; margin-bottom: 40px;">${ingressTekst}</p>
         
-        <!-- SVG Overlegg for Fasitstreker -->
         <svg id="fasit-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;"></svg>
 
         <div style="display: flex; justify-content: space-between; width: 100%; padding: 0 20px; box-sizing: border-box;">
-            <!-- VENSTRE KOLONNE: BILDER -->
             <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
     `;
 
-    venstreBilder.forEach((item, idx) => {
+    venstreBilder.forEach((item) => {
         html += `
             <div style="display: flex; align-items: center; gap: 15px; height: 50px;">
                 <span class="oppgave-symbol" style="display: flex; align-items: center; justify-content: center;">${item.symbol}</span>
@@ -88,11 +92,10 @@ export function generateStaveKryss(nyStokking = true) {
 
     html += `
             </div>
-            <!-- HØYRE KOLONNE: ORD -->
             <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
     `;
 
-    hoyreOrd.forEach((item, idx) => {
+    hoyreOrd.forEach((item) => {
         let visningsTekst = storeBokstaver ? item.ord.toUpperCase() : item.ord.toLowerCase();
         
         html += `
@@ -112,11 +115,12 @@ export function generateStaveKryss(nyStokking = true) {
 
     outputContainer.innerHTML = html;
 
-    // 5. Tegn fasitstreker dersom bryteren er aktivert
+    // 4. Tegn fasitstreker dersom bryteren er aktivert
     if (visFasit) {
-        setTimeout(tegnerFasitStreker, 50); // Liten delay slik at DOM rekker å tegne elementene
+        setTimeout(tegnerFasitStreker, 50);
     }
 }
+
 
 // --- HJELPEFUNKSJON FOR Å TEGNE STRERER ---
 function tegnerFasitStreker() {
@@ -315,6 +319,7 @@ export function toggleMenu() {
 export function resetForm() {
     selectedAdvancedWords = [];
     gjeldendeOrdListe = [];
+    gjeldendeHoyreOrd = [];
     
     const captureArea = document.getElementById('capture-area');
     const placeholder = document.getElementById('placeholder-image');

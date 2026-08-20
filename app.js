@@ -23,8 +23,6 @@ export function generateStaveKryss(nyStokking = true) {
             const antall = 5;
             const muligeOrd = [...substantivDb];
             const stokket = muligeOrd.sort(() => 0.5 - Math.random());
-            
-            // Henter tilfeldige elementer fra den nye substantivDb
             gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
         }
     }
@@ -62,6 +60,7 @@ export function generateStaveKryss(nyStokking = true) {
     // 4. Bygg HTML-struktur
     outputContainer.innerHTML = "";
     outputContainer.style.fontFamily = fontFamily;
+    outputContainer.style.position = "relative"; // Viktig for SVG-posisjonering
 
     const tittelTekst = storeBokstaver ? "FINN RIKTIG ORD" : "Finn riktig ord";
     const ingressTekst = storeBokstaver ? "TREKK STREK FRA BILDET TIL RIKTIG ORD." : "Trekk strek fra bildet til riktig ord.";
@@ -69,16 +68,20 @@ export function generateStaveKryss(nyStokking = true) {
     let html = `
         <h1 style="font-family: ${fontFamily}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; text-align: center;">${tittelTekst}</h1>
         <p style="text-align: center; margin-bottom: 40px;">${ingressTekst}</p>
+        
+        <!-- SVG Overlegg for Fasitstreker -->
+        <svg id="fasit-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;"></svg>
+
         <div style="display: flex; justify-content: space-between; width: 100%; padding: 0 20px; box-sizing: border-box;">
             <!-- VENSTRE KOLONNE: BILDER -->
             <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
     `;
 
-    venstreBilder.forEach((item) => {
+    venstreBilder.forEach((item, idx) => {
         html += `
             <div style="display: flex; align-items: center; gap: 15px; height: 50px;">
                 <span class="oppgave-symbol" style="display: flex; align-items: center; justify-content: center;">${item.symbol}</span>
-                <div style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
+                <div class="fasit-punkt-venstre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
             </div>
         `;
     });
@@ -89,15 +92,14 @@ export function generateStaveKryss(nyStokking = true) {
             <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
     `;
 
-    hoyreOrd.forEach((item) => {
+    hoyreOrd.forEach((item, idx) => {
         let visningsTekst = storeBokstaver ? item.ord.toUpperCase() : item.ord.toLowerCase();
         
         html += `
             <div style="display: flex; align-items: center; gap: 15px; height: 50px;">
-                <div style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
+                <div class="fasit-punkt-hoyre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
                 <span style="font-size: ${fontSize}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; min-width: 120px;">
                     ${visningsTekst}
-                    ${visFasit ? `<span style="color: #27ae60; font-size: 0.6em; margin-left: 5px;">(${item.ord})</span>` : ''}
                 </span>
             </div>
         `;
@@ -109,6 +111,54 @@ export function generateStaveKryss(nyStokking = true) {
     `;
 
     outputContainer.innerHTML = html;
+
+    // 5. Tegn fasitstreker dersom bryteren er aktivert
+    if (visFasit) {
+        setTimeout(tegnerFasitStreker, 50); // Liten delay slik at DOM rekker å tegne elementene
+    }
+}
+
+// --- HJELPEFUNKSJON FOR Å TEGNE STRERER ---
+function tegnerFasitStreker() {
+    const container = document.getElementById('output-container');
+    const svg = document.getElementById('fasit-svg');
+    if (!container || !svg) return;
+
+    svg.innerHTML = ''; // Tøm tidligere streker
+
+    const containerRect = container.getBoundingClientRect();
+    const venstrePunkter = container.querySelectorAll('.fasit-punkt-venstre');
+    const hoyrePunkter = container.querySelectorAll('.fasit-punkt-hoyre');
+
+    venstrePunkter.forEach(vPunkt => {
+        const ord = vPunkt.getAttribute('data-ord');
+        // Finn matchende punkt til høyre med samme ord
+        const hPunkt = Array.from(hoyrePunkter).find(h => h.getAttribute('data-ord') === ord);
+
+        if (hPunkt) {
+            const r1 = vPunkt.getBoundingClientRect();
+            const r2 = hPunkt.getBoundingClientRect();
+
+            // Regn ut senter i sirkel relativt til containeren
+            const x1 = (r1.left + r1.width / 2) - containerRect.left;
+            const y1 = (r1.top + r1.height / 2) - containerRect.top;
+            const x2 = (r2.left + r2.width / 2) - containerRect.left;
+            const y2 = (r2.top + r2.height / 2) - containerRect.top;
+
+            // Opprett en SVG-linje
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", x1);
+            line.setAttribute("y1", y1);
+            line.setAttribute("x2", x2);
+            line.setAttribute("y2", y2);
+            line.setAttribute("stroke", "#27ae60"); // Grønn fasitfarge
+            line.setAttribute("stroke-width", "3");
+            line.setAttribute("stroke-dasharray", "6,6"); // Stiplet linje
+            line.setAttribute("stroke-linecap", "round");
+
+            svg.appendChild(line);
+        }
+    });
 }
 
 // --- MODAL & FANE-FUNKSJONER ---

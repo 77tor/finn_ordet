@@ -7,6 +7,20 @@ let selectedAdvancedWords = []; // Lagrer valgte ord fra modalen
 let gjeldendeHoyreOrd = []; // Lagrer høyre kolonne så rekkefølgen beholdes
 
 
+function stokkeHoyreKolonne(skalStokke) {
+    gjeldendeHoyreOrd = [...gjeldendeOrdListe];
+
+    if (skalStokke && gjeldendeHoyreOrd.length > 1) {
+        let like = true;
+        let forsok = 0;
+        while (like && forsok < 10) {
+            gjeldendeHoyreOrd.sort(() => 0.5 - Math.random());
+            like = gjeldendeOrdListe.some((item, index) => item.ord === gjeldendeHoyreOrd[index].ord);
+            forsok++;
+        }
+    }
+}
+
 export function generateStaveKryss(nyStokking = true) {
     const outputContainer = document.getElementById('output-container');
     const captureArea = document.getElementById('capture-area');
@@ -28,30 +42,26 @@ export function generateStaveKryss(nyStokking = true) {
             gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
         }
 
-        // Generer ny stokket høyre kolonne dersom bryteren er på
-        gjeldendeHoyreOrd = [...gjeldendeOrdListe];
-
-        if (skalStokke) {
-            gjeldendeHoyreOrd.sort(() => 0.5 - Math.random());
-            if (gjeldendeHoyreOrd.length > 1) {
-                let like = true;
-                let forsok = 0;
-                while (like && forsok < 10) {
-                    like = gjeldendeOrdListe.some((item, index) => item.ord === gjeldendeHoyreOrd[index].ord);
-                    if (like) gjeldendeHoyreOrd.sort(() => 0.5 - Math.random());
-                    forsok++;
-                }
-            }
-        }
+        // Generer ny høyre kolonne
+        stokkeHoyreKolonne(skalStokke);
     } else {
-        // Hvis brukeren bare endrer innstillinger (oppdaterVisning):
-        // Dersom "Stokke om" er slått AV, synkroniser høyre kolonne med venstre
+        // Hvis brukeren flipper "Stokke om"-bryteren av/på:
         if (!skalStokke) {
+            // Slått AV: Sett i samme rekkefølge som venstre
             gjeldendeHoyreOrd = [...gjeldendeOrdListe];
+        } else {
+            // Slått PÅ igjen: Stokker på nytt dersom den for øyeblikket er usortert/rett
+            const erLiktSortert = gjeldendeOrdListe.every((item, idx) => item.ord === gjeldendeHoyreOrd[idx]?.ord);
+            if (erLiktSortert) {
+                stokkeHoyreKolonne(true);
+            }
         }
     }
 
     if (gjeldendeOrdListe.length === 0) return;
+
+    // ... resten av koden din fortsetter som før
+
 
     // ... resten av generateStaveKryss-koden fortsetter som før
 

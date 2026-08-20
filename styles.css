@@ -42,10 +42,28 @@ select { width: 110px; }
 .ord-rad { display: flex; align-items: center; gap: 20px; padding: 8px 0; border-bottom: 1px dashed #e0e0e0; }
 .bilde-container { width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .oppgave-bilde { max-width: 100%; max-height: 100%; object-fit: contain; }
-.oppgave-symbol { font-size: 2.5rem; line-height: 1; }
-.stavelser-container { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.stavelse-boks { border: 2px solid #333; border-radius: 6px; padding: 6px 16px; min-width: 40px; text-align: center; background-color: #fafafa; }
-.fasit-tekst { margin-left: auto; font-size: 0.9em; color: #7f8c8d; font-style: italic; }
+
+/* OPPDATERT: Gjør at symbolet/bildet tilpasser seg dynamically fra JS */
+.oppgave-symbol { 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important; 
+    line-height: 1; 
+}
+
+/* Tvinger både <img>, <svg> og <span> inne i symbolet til å fylle hele beholderen */
+.oppgave-symbol img,
+.oppgave-symbol svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+}
+
+.oppgave-symbol span {
+    font-size: inherit !important;
+}
 
 /* --- HAMBURGER-MENY --- */
 .menu-container { position: relative; margin-bottom: 10px; }

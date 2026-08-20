@@ -350,7 +350,7 @@ window.lagreModalValg = lagreModalValg;
 
 // --- AUTOMATISK INITIALISERING VED LASTING ---
 function initApp() {
-    generateStaveKryss(true);
+    resetForm();
 }
 
 if (document.readyState === 'loading') {

@@ -320,12 +320,14 @@ export function resetForm() {
     const placeholder = document.getElementById('placeholder-image');
     const outputContainer = document.getElementById('output-container');
     
-    // Tøm innholdet og skjuler oppgavearket
     if (outputContainer) outputContainer.innerHTML = '';
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-    // Nullstill tekstfelt i modalen hvis de finnes
+    // Sett bryteren for "Stokke om rekkefølge" til på som standard
+    const shuffleToggle = document.getElementById('toggle-shuffle');
+    if (shuffleToggle) shuffleToggle.checked = true;
+
     const customInput = document.getElementById('custom-word-input');
     if (customInput) customInput.value = '';
 }

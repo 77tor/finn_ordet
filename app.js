@@ -85,14 +85,14 @@ export function generateStaveKryss(nyStokking = true) {
     const tittelTekst = storeBokstaver ? "FINN RIKTIG ORD" : "Finn riktig ord";
     const ingressTekst = storeBokstaver ? "TREKK STREK FRA BILDET TIL RIKTIG ORD." : "Trekk strek fra bildet til riktig ord.";
 
-    let html = `
-        <h1 style="font-family: ${fontFamily}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; text-align: center;">${tittelTekst}</h1>
-        <p style="text-align: center; margin-bottom: 40px;">${ingressTekst}</p>
+let html = `
+        <h1 style="font-family: ${fontFamily}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; text-align: center; margin-top: 0; margin-bottom: 5px;">${tittelTekst}</h1>
+        <p style="text-align: center; margin-top: 0; margin-bottom: 20px;">${ingressTekst}</p>
         
         <svg id="fasit-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;"></svg>
 
         <div style="display: flex; justify-content: space-between; width: 100%; padding: 0 20px; box-sizing: border-box;">
-            <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
+            <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
     `;
 
     venstreBilder.forEach((item) => {

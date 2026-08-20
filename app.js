@@ -1,5 +1,5 @@
 // --- IMPORT ---
-import { openmojiList } from './openmoji.js';
+import { substantivDb } from './bilder.js';
 
 // --- TILSTAND OG VARIABLER ---
 let gjeldendeOrdListe = [];
@@ -21,15 +21,11 @@ export function generateStaveKryss(nyStokking = true) {
             gjeldendeOrdListe = [...selectedAdvancedWords];
         } else {
             const antall = 5;
-            const muligeOrd = [...openmojiList];
+            const muligeOrd = [...substantivDb];
             const stokket = muligeOrd.sort(() => 0.5 - Math.random());
             
-            // Konverter fra openmoji-format til internt format
-            gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length)).map(item => ({
-                ord: item.label,
-                path: item.path,
-                symbol: `<img src="${item.path}" alt="${item.label}" style="width: 45px; height: 45px; object-fit: contain;">`
-            }));
+            // Henter tilfeldige elementer fra den nye substantivDb
+            gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
         }
     }
 
@@ -149,12 +145,12 @@ export function lastInnDatabaseGrid(filterTekst = '') {
 
     grid.innerHTML = '';
 
-    openmojiList.forEach(item => {
-        if (filterTekst && !item.label.toLowerCase().includes(filterTekst.toLowerCase())) {
+    substantivDb.forEach(item => {
+        if (filterTekst && !item.ord.toLowerCase().includes(filterTekst.toLowerCase())) {
             return;
         }
 
-        const erValgt = selectedAdvancedWords.some(w => w.path === item.path);
+        const erValgt = selectedAdvancedWords.some(w => w.ord === item.ord && w.symbol === item.symbol);
 
         const kort = document.createElement('div');
         kort.className = `ord-kort ${erValgt ? 'selected' : ''}`;
@@ -165,23 +161,23 @@ export function lastInnDatabaseGrid(filterTekst = '') {
             border-radius: 8px; 
             cursor: pointer; 
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         `;
         
         kort.innerHTML = `
-            <img src="${item.path}" alt="${item.label}" style="width: 40px; height: 40px; object-fit: contain;">
-            <div style="margin-top: 5px; font-weight: bold; font-size: 0.9rem;">${item.label}</div>
+            <div style="height: 40px; display: flex; align-items: center; justify-content: center;">${item.symbol}</div>
+            <div style="margin-top: 5px; font-weight: bold; font-size: 0.9rem;">${item.ord}</div>
         `;
 
         kort.onclick = () => {
-            const idx = selectedAdvancedWords.findIndex(w => w.path === item.path);
+            const idx = selectedAdvancedWords.findIndex(w => w.ord === item.ord && w.symbol === item.symbol);
             if (idx > -1) {
                 selectedAdvancedWords.splice(idx, 1);
             } else {
-                selectedAdvancedWords.push({
-                    ord: item.label,
-                    path: item.path,
-                    symbol: `<img src="${item.path}" alt="${item.label}" style="width: 45px; height: 45px; object-fit: contain;">`
-                });
+                selectedAdvancedWords.push(item);
             }
             lastInnDatabaseGrid(filterTekst);
             oppdaterMineOrdListe();
@@ -243,7 +239,7 @@ function oppdaterMineOrdListe() {
         const li = document.createElement('li');
         li.style.cssText = "display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;";
         li.innerHTML = `
-            <span>${item.symbol} ${item.ord}</span>
+            <span style="display: flex; align-items: center; gap: 8px;">${item.symbol} ${item.ord}</span>
             <button style="background: #e74c3c; color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer;">X</button>
         `;
         li.querySelector('button').onclick = () => {

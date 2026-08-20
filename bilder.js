@@ -1,4 +1,4 @@
-import { openmojiMap } from './openmoji.js';
+import { openmojiList } from './openmoji.js';
 
 // 1. Emoji-databasen
 const emojiDb = [
@@ -56,15 +56,11 @@ const emojiDb = [
     symbol: `<span style="font-size: 28px; line-height: 1;">${item.symbol}</span>`
 }));
 
-// 2. OpenMoji-bildene (Konverterer filstien til små bokstaver for å unngå GitHub Pages 404)
-const openmojiDb = Object.entries(openmojiMap).map(([sti, ord]) => {
-    // Tvinger stien/filnavnet til små bokstaver (f.eks "Bilder/1f9dd.svg")
-    const korrigertSti = sti.toLowerCase(); 
-    return {
-        ord: ord,
-        symbol: `<img src="${korrigertSti}" alt="${ord}" style="width: 40px; height: 40px; object-fit: contain;">`
-    };
-});
+// 2. OpenMoji-bildene (Kartlegges fra openmojiList)
+const openmojiDb = openmojiList.map(item => ({
+    ord: item.label,
+    symbol: `<img src="${item.path.toLowerCase()}" alt="${item.label}" style="width: 40px; height: 40px; object-fit: contain;">`
+}));
 
 // 3. Felles, alfabetisk sortert database som eksporteres
 export const substantivDb = [...openmojiDb, ...emojiDb]

@@ -118,6 +118,7 @@ export function generateStaveKryss(nyStokking = true) {
     }
 }
 
+
 // --- HJELPEFUNKSJON FOR Å TEGNE STREKER ---
 function tegnerFasitStreker() {
     const container = document.getElementById('output-container');
@@ -126,11 +127,25 @@ function tegnerFasitStreker() {
 
     svg.innerHTML = ''; // Tøm tidligere streker
 
+    // Palette med 10 klare, unike farger
+    const farger = [
+        '#e74c3c', // Rød
+        '#3498db', // Blå
+        '#2ecc71', // Grønn
+        '#9b59b6', // Lilla
+        '#e67e22', // Oransje
+        '#1abc9c', // Turkis
+        '#e84393', // Rosa
+        '#f1c40f', // Gul/Gull
+        '#34495e', // Mørk skiferblå
+        '#d35400'  // Mørk oransje/brun
+    ];
+
     const containerRect = container.getBoundingClientRect();
     const venstrePunkter = container.querySelectorAll('.fasit-punkt-venstre');
     const hoyrePunkter = container.querySelectorAll('.fasit-punkt-hoyre');
 
-    venstrePunkter.forEach(vPunkt => {
+    venstrePunkter.forEach((vPunkt, index) => {
         const ord = vPunkt.getAttribute('data-ord');
         const hPunkt = Array.from(hoyrePunkter).find(h => h.getAttribute('data-ord') === ord);
 
@@ -143,12 +158,15 @@ function tegnerFasitStreker() {
             const x2 = (r2.left + r2.width / 2) - containerRect.left;
             const y2 = (r2.top + r2.height / 2) - containerRect.top;
 
+            // Henter farge fra listen (ruller rundt med % hvis det mot formodning er flere enn 10)
+            const valgtFarge = farger[index % farger.length];
+
             const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
             line.setAttribute("x1", x1);
             line.setAttribute("y1", y1);
             line.setAttribute("x2", x2);
             line.setAttribute("y2", y2);
-            line.setAttribute("stroke", "#27ae60");
+            line.setAttribute("stroke", valgtFarge);
             line.setAttribute("stroke-width", "3");
             line.setAttribute("stroke-dasharray", "6,6");
             line.setAttribute("stroke-linecap", "round");

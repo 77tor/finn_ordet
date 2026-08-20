@@ -205,15 +205,21 @@ export function lukkOrdModal() {
 }
 
 export function byttFane(faneNavn) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-    const valgtFane = document.getElementById(`fane-${faneNavn}`);
-    if (valgtFane) valgtFane.classList.add('active');
-
+    const faneDb = document.getElementById('fane-database');
+    const faneEgne = document.getElementById('fane-egne');
     const knapper = document.querySelectorAll('.tab-btn');
-    if (faneNavn === 'database' && knapper[0]) knapper[0].classList.add('active');
-    if (faneNavn === 'egne' && knapper[1]) knapper[1].classList.add('active');
+
+    knapper.forEach(el => el.classList.remove('active'));
+
+    if (faneNavn === 'database') {
+        if (faneDb) faneDb.style.display = 'flex';
+        if (faneEgne) faneEgne.style.display = 'none';
+        if (knapper[0]) knapper[0].classList.add('active');
+    } else {
+        if (faneDb) faneDb.style.display = 'none';
+        if (faneEgne) faneEgne.style.display = 'flex';
+        if (knapper[1]) knapper[1].classList.add('active');
+    }
 }
 
 export function lastInnDatabaseGrid(filterTekst = '') {
@@ -309,24 +315,40 @@ export function leggTilEgetOrd() {
 
 function oppdaterMineOrdListe() {
     const liste = document.getElementById('mine-ord-liste');
+    const antallEl = document.getElementById('antall-valgte');
+    
+    if (antallEl) antallEl.innerText = selectedAdvancedWords.length;
     if (!liste) return;
 
     liste.innerHTML = '';
+    
+    if (selectedAdvancedWords.length === 0) {
+        liste.innerHTML = '<li style="color: #888; font-size: 0.85rem; font-style: italic; padding: 5px 0;">Ingen ord valgt ennå. Klikk på ordene til høyre.</li>';
+        return;
+    }
+
     selectedAdvancedWords.forEach((item, index) => {
         const li = document.createElement('li');
-        li.style.cssText = "display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;";
+        li.style.cssText = "display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid #ddd; padding: 6px; border-radius: 4px; margin-bottom: 6px; font-size: 0.9rem;";
         li.innerHTML = `
-            <span style="display: flex; align-items: center; gap: 8px;">${item.symbol} ${item.ord}</span>
-            <button style="background: #e74c3c; color: white; border: none; border-radius: 4px; padding: 2px 6px; cursor: pointer;">X</button>
+            <span style="display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <span style="display: inline-flex; width: 24px; height: 24px; align-items: center; justify-content: center;">${item.symbol}</span>
+                <strong>${item.ord}</strong>
+            </span>
+            <button style="background: #e74c3c; color: white; border: none; border-radius: 3px; padding: 2px 6px; cursor: pointer; font-size: 0.8rem;">✕</button>
         `;
+        
         li.querySelector('button').onclick = () => {
             selectedAdvancedWords.splice(index, 1);
             oppdaterMineOrdListe();
-            lastInnDatabaseGrid();
+            const sokTekst = document.getElementById('modal-sok')?.value || '';
+            lastInnDatabaseGrid(sokTekst);
         };
+        
         liste.appendChild(li);
     });
 }
+
 
 export function lagreModalValg() {
     lukkOrdModal();

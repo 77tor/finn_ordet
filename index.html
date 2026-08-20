@@ -118,17 +118,22 @@
 
     <br>
 
-    <!-- Hovedknapper nederst -->
-    <div style="display: flex; gap: 6px; margin-top: auto;">
-        <button class="action-btn" style="background-color: #27ae60; flex: 1; padding: 10px 4px;" onclick="apneOrdModal()">
+<!-- Hovedknapper nederst -->
+    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto;">
+        <!-- "Velg ord" øverst og i full bredde -->
+        <button class="action-btn" style="background-color: #27ae60; width: 100%; padding: 12px 4px; font-size: 0.95rem;" onclick="apneOrdModal()">
             Velg ord
         </button>
-        <button class="action-btn" style="background-color: #e74c3c; flex: 1; padding: 10px 4px;" onclick="resetForm()">
-            Nullstill
-        </button>
-        <button class="action-btn" style="background-color: #2980b9; flex: 1; padding: 10px 4px;" onclick="window.print()">
-            Skriv ut
-        </button>
+        
+        <!-- "Nullstill" og "Skriv ut" ved siden av hverandre (like store) -->
+        <div style="display: flex; gap: 6px; width: 100%;">
+            <button class="action-btn" style="background-color: #e74c3c; flex: 1; padding: 10px 4px; margin: 0;" onclick="resetForm()">
+                Nullstill
+            </button>
+            <button class="action-btn" style="background-color: #2980b9; flex: 1; padding: 10px 4px; margin: 0;" onclick="window.print()">
+                Skriv ut
+            </button>
+        </div>
     </div>
 </div>
 

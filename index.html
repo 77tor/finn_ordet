@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finn ordet</title>
-    <link rel="icon" type="image/png" href="Bilder/finn_ordet_icon.png">
-    <link rel="apple-touch-icon" href="Bilder/finn_ordet_icon.png">
+    <link rel="icon" type="image/png" href="./Bilder/finn_ordet_icon.png">
+    <link rel="apple-touch-icon" href="./Bilder/finn_ordet_icon.png">
     
     <!-- Eksterne biblioteker -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -32,7 +32,7 @@
                     <img src="gitter_02.png" class="menu-icon" alt="Gitter-ord"> Gitter-ord
                 </a>
                 <a href="https://77tor.github.io/les_og_skriv/" target="_self">
-                    <img src="Bilder/les_skriv_03.png" class="menu-icon" alt="Les og skriv"> Les og skriv
+                    <img src="./Bilder/les_skriv_03.png" class="menu-icon" alt="Les og skriv"> Les og skriv
                 </a>
                 <a href="https://77tor.github.io/ord-sok/" target="_self"> 
                     <img src="ord-sok.png" class="menu-icon" alt="Ordsøk"> Ordsøk
@@ -121,11 +121,11 @@
 
 <div class="main-content">
     <div id="placeholder-image" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 80vh;">
-        <img src="Bilder/finn_ordet_bg.png" alt="Velkomstbilde" style="max-width: 400px; opacity: 0.15; filter: grayscale(100%);">
+        <img src="./Bilder/finn_ordet_bg.png" alt="Velkomstbilde" style="max-width: 400px; opacity: 0.15; filter: grayscale(100%);">
     </div> 
 
     <div id="capture-area">
-        <img src="Bilder/finn_ordet_bg.png" id="watermark" alt="Vannmerke">
+        <img src="./Bilder/finn_ordet_bg.png" id="watermark" alt="Vannmerke">
         <div id="output-container"></div>
     </div>
 </div>
@@ -179,34 +179,8 @@
     </div>
 </div>
 
-<!-- Koble til JavaScript-filer -->
-<script type="module" src="openmoji.js"></script>
+<!-- Kun app.js trenger å importeres -->
 <script type="module" src="app.js"></script>
-
-<!-- Eksponer modul-funksjoner til window så onclick i HTML finner dem -->
-<script type="module">
-    import { 
-        apneOrdModal, 
-        lukkOrdModal, 
-        byttFane, 
-        filtrerDatabaseGrid, 
-        leggTilEgetOrd, 
-        lagreModalValg, 
-        oppdaterVisning, 
-        resetForm, 
-        toggleMenu 
-    } from './app.js';
-
-    window.apneOrdModal = apneOrdModal;
-    window.lukkOrdModal = lukkOrdModal;
-    window.byttFane = byttFane;
-    window.filtrerDatabaseGrid = filtrerDatabaseGrid;
-    window.leggTilEgetOrd = leggTilEgetOrd;
-    window.lagreModalValg = lagreModalValg;
-    window.oppdaterVisning = oppdaterVisning;
-    window.resetForm = resetForm;
-    window.toggleMenu = toggleMenu;
-</script>
 
 </body>
 </html>

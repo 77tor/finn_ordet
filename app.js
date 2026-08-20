@@ -6,6 +6,7 @@ let gjeldendeOrdListe = [];
 let selectedAdvancedWords = []; // Lagrer valgte ord fra modalen
 let gjeldendeHoyreOrd = []; // Lagrer høyre kolonne så rekkefølgen beholdes
 
+
 export function generateStaveKryss(nyStokking = true) {
     const outputContainer = document.getElementById('output-container');
     const captureArea = document.getElementById('capture-area');
@@ -14,6 +15,7 @@ export function generateStaveKryss(nyStokking = true) {
     if (!outputContainer) return;
 
     const harEgneValg = selectedAdvancedWords.length > 0;
+    const skalStokke = document.getElementById('toggle-shuffle')?.checked ?? true;
 
     // 1. Generer eller hent venstre liste
     if (nyStokking || gjeldendeOrdListe.length === 0) {
@@ -26,8 +28,7 @@ export function generateStaveKryss(nyStokking = true) {
             gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
         }
 
-        // Generer ny høyre kolonne KUN når det er ny stokking
-        const skalStokke = document.getElementById('toggle-shuffle')?.checked ?? true;
+        // Generer ny stokket høyre kolonne dersom bryteren er på
         gjeldendeHoyreOrd = [...gjeldendeOrdListe];
 
         if (skalStokke) {
@@ -42,9 +43,17 @@ export function generateStaveKryss(nyStokking = true) {
                 }
             }
         }
+    } else {
+        // Hvis brukeren bare endrer innstillinger (oppdaterVisning):
+        // Dersom "Stokke om" er slått AV, synkroniser høyre kolonne med venstre
+        if (!skalStokke) {
+            gjeldendeHoyreOrd = [...gjeldendeOrdListe];
+        }
     }
 
     if (gjeldendeOrdListe.length === 0) return;
+
+    // ... resten av generateStaveKryss-koden fortsetter som før
 
     if (placeholder) placeholder.style.display = 'none';
     if (captureArea) captureArea.style.display = 'block';

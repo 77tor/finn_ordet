@@ -443,7 +443,7 @@ export const openmojiList = [
   { path: "./Bilder/1F9A2.svg", label: "svane" },
   { path: "./Bilder/26AB.svg", label: "svart sirkel" },
   { path: "./Bilder/2694.svg", label: "sverd" },
-  { path: "./Bilder/1F9FD.svg", label: "svamp",
+  { path: "./Bilder/1F9FD.svg", label: "svamp"},
   { path: "./Bilder/1F9FC.svg", label: "såpe" },
   { path: "./Bilder/1F3E5.svg", label: "sykehus" },
   { path: "./Bilder/1F6B2.svg", label: "sykkel" },

@@ -6,7 +6,6 @@ let gjeldendeOrdListe = [];
 let selectedAdvancedWords = []; // Lagrer valgte ord fra modalen
 let gjeldendeHoyreOrd = []; // Lagrer høyre kolonne så rekkefølgen beholdes
 
-
 function stokkeHoyreKolonne(skalStokke) {
     gjeldendeHoyreOrd = [...gjeldendeOrdListe];
 
@@ -59,11 +58,6 @@ export function generateStaveKryss(nyStokking = true) {
     }
 
     if (gjeldendeOrdListe.length === 0) return;
-
-    // ... resten av koden din fortsetter som før
-
-
-    // ... resten av generateStaveKryss-koden fortsetter som før
 
     if (placeholder) placeholder.style.display = 'none';
     if (captureArea) captureArea.style.display = 'block';
@@ -177,7 +171,6 @@ function tegnerFasitStreker() {
             const x2 = (r2.left + r2.width / 2) - containerRect.left;
             const y2 = (r2.top + r2.height / 2) - containerRect.top;
 
-            // Henter farge fra listen (ruller rundt med % hvis det mot formodning er flere enn 10)
             const valgtFarge = farger[index % farger.length];
 
             const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -354,8 +347,11 @@ export function resetForm() {
     const captureArea = document.getElementById('capture-area');
     const placeholder = document.getElementById('placeholder-image');
     const outputContainer = document.getElementById('output-container');
+    const fasitSvg = document.getElementById('fasit-svg');
     
+    // Tøm alt innhold
     if (outputContainer) outputContainer.innerHTML = '';
+    if (fasitSvg) fasitSvg.innerHTML = '';
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 

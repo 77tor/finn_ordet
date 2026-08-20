@@ -14,11 +14,12 @@ function stokkeHoyreKolonne(skalStokke) {
         let forsok = 0;
         while (like && forsok < 10) {
             gjeldendeHoyreOrd.sort(() => 0.5 - Math.random());
-            like = gjeldendeOrdListe.some((item, index) => item.ord === gjeldendeHoyreOrd[index].ord);
+            like = gjeldendeOrdListe.some((item, index) => item.ord === gjeldendeHoyreOrd[index]?.ord);
             forsok++;
         }
     }
 }
+
 
 export function generateStaveKryss(nyStokking = true) {
     const outputContainer = document.getElementById('output-container');
@@ -35,21 +36,18 @@ export function generateStaveKryss(nyStokking = true) {
         if (harEgneValg) {
             gjeldendeOrdListe = [...selectedAdvancedWords];
         } else {
-            const antall = 5;
+            const antall = 6; // Sett fast antall ord her (f.eks. 6)
             const muligeOrd = [...substantivDb];
             const stokket = muligeOrd.sort(() => 0.5 - Math.random());
             gjeldendeOrdListe = stokket.slice(0, Math.min(antall, stokket.length));
         }
 
-        // Generer ny høyre kolonne
+        // Generer ny høyre kolonne direkte basert på gjeldendeOrdListe
         stokkeHoyreKolonne(skalStokke);
     } else {
-        // Hvis brukeren flipper "Stokke om"-bryteren av/på:
         if (!skalStokke) {
-            // Slått AV: Sett i samme rekkefølge som venstre
             gjeldendeHoyreOrd = [...gjeldendeOrdListe];
         } else {
-            // Slått PÅ igjen: Stokker på nytt dersom den for øyeblikket er usortert/rett
             const erLiktSortert = gjeldendeOrdListe.every((item, idx) => item.ord === gjeldendeHoyreOrd[idx]?.ord);
             if (erLiktSortert) {
                 stokkeHoyreKolonne(true);
@@ -57,7 +55,11 @@ export function generateStaveKryss(nyStokking = true) {
         }
     }
 
-    if (gjeldendeOrdListe.length === 0) return;
+    // TVING AT BEGGE LISTENE HAR SAMME LENGTH
+    const antallOrd = gjeldendeOrdListe.length;
+    const hoyreOrdAvskåret = gjeldendeHoyreOrd.slice(0, antallOrd);
+
+    if (antallOrd === 0) return;
 
     if (placeholder) placeholder.style.display = 'none';
     if (captureArea) captureArea.style.display = 'block';
@@ -69,13 +71,8 @@ export function generateStaveKryss(nyStokking = true) {
     const fetSkrift = document.getElementById('toggle-bold')?.checked || false;
     const visFasit = document.getElementById('toggle-fasit')?.checked || false;
     
-    // Hent valgt bildestørrelse i piksler (default 55px hvis ikke valgt)
     const bildeStorrelsePx = document.getElementById('image-size')?.value || "55";
     const bildeStorrelse = bildeStorrelsePx + "px";
-
-    // Bruk de lagrede listene
-    const venstreBilder = gjeldendeOrdListe;
-    const hoyreOrd = gjeldendeHoyreOrd;
 
     // 3. Bygg HTML-struktur
     outputContainer.innerHTML = "";
@@ -85,39 +82,43 @@ export function generateStaveKryss(nyStokking = true) {
     const tittelTekst = storeBokstaver ? "FINN RIKTIG ORD" : "Finn riktig ord";
     const ingressTekst = storeBokstaver ? "TREKK STREK FRA BILDET TIL RIKTIG ORD." : "Trekk strek fra bildet til riktig ord.";
 
-let html = `
+    let html = `
         <h1 style="font-family: ${fontFamily}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; text-align: center; margin-top: 0; margin-bottom: 5px;">${tittelTekst}</h1>
         <p style="text-align: center; margin-top: 0; margin-bottom: 20px;">${ingressTekst}</p>
         
         <svg id="fasit-svg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10;"></svg>
 
-        <div style="display: flex; justify-content: space-between; width: 100%; padding: 0 20px; box-sizing: border-box;">
-            <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+        <div style="display: flex; justify-content: space-between; width: 100%; padding: 0 20px; box-sizing: border-box; align-items: flex-start;">
+            
+            <!-- VENSTRE KOLONNE (BILDER) -->
+            <div style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start;">
     `;
 
-    venstreBilder.forEach((item) => {
+    gjeldendeOrdListe.forEach((item) => {
         html += `
-            <div style="display: flex; align-items: center; gap: 15px; min-height: ${bildeStorrelse};">
+            <div style="display: flex; align-items: center; gap: 15px; height: ${bildeStorrelse}; box-sizing: border-box;">
                 <span class="oppgave-symbol" style="display: flex; align-items: center; justify-content: center; width: ${bildeStorrelse}; height: ${bildeStorrelse}; font-size: calc(${bildeStorrelsePx}px * 0.75);">
                     ${item.symbol}
                 </span>
-                <div class="fasit-punkt-venstre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
+                <div class="fasit-punkt-venstre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%; flex-shrink: 0;"></div>
             </div>
         `;
     });
 
     html += `
             </div>
-            <div style="display: flex; flex-direction: column; gap: 35px; align-items: center;">
+
+            <!-- HØYRE KOLONNE (ORD) -->
+            <div style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start;">
     `;
 
-    hoyreOrd.forEach((item) => {
+    hoyreOrdAvskåret.forEach((item) => {
         let visningsTekst = storeBokstaver ? item.ord.toUpperCase() : item.ord.toLowerCase();
         
         html += `
-            <div style="display: flex; align-items: center; gap: 15px; min-height: ${bildeStorrelse};">
-                <div class="fasit-punkt-hoyre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%;"></div>
-                <span style="font-size: ${fontSize}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; min-width: 120px;">
+            <div style="display: flex; align-items: center; gap: 15px; height: ${bildeStorrelse}; box-sizing: border-box;">
+                <div class="fasit-punkt-hoyre" data-ord="${item.ord}" style="width: 12px; height: 12px; background-color: #333; border-radius: 50%; flex-shrink: 0;"></div>
+                <span style="font-size: ${fontSize}; font-weight: ${fetSkrift ? 'bold' : 'normal'}; min-width: 120px; display: flex; align-items: center; height: 100%;">
                     ${visningsTekst}
                 </span>
             </div>

@@ -46,20 +46,22 @@ export function generateStaveKryss(nyStokking = true) {
     const harEgneValg = selectedAdvancedWords.length > 0;
     const skalStokke = document.getElementById('toggle-shuffle')?.checked ?? true;
 
-    // 2. Generer eller hent venstre liste (Uten å overskrive eller slette valgte ord)
+// 2. Generer eller hent venstre liste (Uten å overskrive eller slette valgte ord)
     if (harEgneValg) {
         // Hent ut inntil maksAntall fra den komplette valglisten
         gjeldendeOrdListe = selectedAdvancedWords.slice(0, maksAntall);
+    } else if (nyStokking) {
+        // Generer KUN nye tilfeldige ord dersom nyStokking eksplisitt kalles (f.eks. ved "Velg ord" eller "Stokke om")
+        const muligeOrd = [...substantivDb];
+        const stokket = muligeOrd.sort(() => 0.5 - Math.random());
+        gjeldendeOrdListe = stokket.slice(0, Math.min(maksAntall, stokket.length));
     } else {
-        if (nyStokking || gjeldendeOrdListe.length === 0) {
-            const muligeOrd = [...substantivDb];
-            const stokket = muligeOrd.sort(() => 0.5 - Math.random());
-            gjeldendeOrdListe = stokket.slice(0, Math.min(maksAntall, stokket.length));
-        } else {
-            // Hvis brukeren bytter bildestørrelse på auto-genererte ord
-            if (gjeldendeOrdListe.length > maksAntall) {
-                gjeldendeOrdListe = gjeldendeOrdListe.slice(0, maksAntall);
-            }
+        // Dersom vi kun endrer stiler og ingen ord er valgt ennå, stans generering
+        if (gjeldendeOrdListe.length === 0) return;
+
+        // Hvis brukeren bytter bildestørrelse på eksisterende ord
+        if (gjeldendeOrdListe.length > maksAntall) {
+            gjeldendeOrdListe = gjeldendeOrdListe.slice(0, maksAntall);
         }
     }
 

@@ -120,6 +120,48 @@ select { width: 110px; }
 
 .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 15px; padding-top: 12px; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
 
+
+/* --- TEMAER OG TEMABILDER --- */
+#capture-area { position: relative; }
+.theme-image { position: absolute; width: 110px; height: 110px; background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0.95; z-index: 5; transition: all 0.3s ease; display: none; }
+#theme-img-1 { top: 25px; left: 20px; display: none; }
+#theme-img-2 { top: 25px; right: 20px; display: none; }
+#theme-img-3 { bottom: 25px; right: 20px; display: none; }
+
+.tema-standard { background-color: #ffffff; border: 4px solid #2b6cb0; }
+.tema-skog { background-color: #f0fff4; border: 5px solid #2f855a; }
+.tema-sol { background-color: #fffaf0; border: 5px solid #dd6b20; }
+.tema-minimal { background-color: #ffffff; border: 2px solid #ffffff; }
+.theme-host { background-color: #fffaf0; border: 6px double #d35400; }
+.theme-vinter { background-color: #f4f9ff; border: 4px dashed #3498db; }
+.theme-sommer { background-color: #fffdf0; border: 5px solid #f1c40f; }
+.theme-rommet { background-color: #f9f9fc; border: 5px solid #9b59b6; }
+.theme-fest { background-color: #fff9fe; border: 5px dotted #e91e63; }
+.theme-racerbil { background-color: #fcfcfc; border: 6px double #e53e3e; }
+.theme-kryp { background-color: #f4f7f4; border: 5px solid #2f855a; }
+.theme-sommerfugl { background-color: #fbf8ff; border: 5px dashed #b7791f; }
+.theme-halloween { background-color: #fcf6f0; border: 5px solid #333; }
+.theme-jul { background-color: #fffbfb; border: 5px dashed #c0392b; }
+.theme-dino { background-color: #fcfdf5; border: 5px solid #795548; }
+.theme-pirat { background-color: #fbfbfc; border: 6px double #34495e; }
+.theme-sport { background-color: #f7fcf7; border: 5px solid #27ae60; }
+
+.theme-dino #theme-img-1, .theme-dino #theme-img-2, .theme-dino #theme-img-3, .theme-fest #theme-img-1, .theme-fest #theme-img-2, .theme-fest #theme-img-3, .theme-racerbil #theme-img-1, .theme-racerbil #theme-img-2, .theme-racerbil #theme-img-3, .theme-kryp #theme-img-1, .theme-kryp #theme-img-2, .theme-kryp #theme-img-3, .theme-sommerfugl #theme-img-1, .theme-sommerfugl #theme-img-2, .theme-sommerfugl #theme-img-3, .theme-halloween #theme-img-1, .theme-halloween #theme-img-2, .theme-halloween #theme-img-3, .theme-host #theme-img-1, .theme-host #theme-img-2, .theme-host #theme-img-3, .theme-jul #theme-img-1, .theme-jul #theme-img-2, .theme-jul #theme-img-3, .theme-pirat #theme-img-1, .theme-pirat #theme-img-2, .theme-pirat #theme-img-3, .theme-sommer #theme-img-1, .theme-sommer #theme-img-2, .theme-sommer #theme-img-3, .theme-sport #theme-img-1, .theme-sport #theme-img-2, .theme-sport #theme-img-3, .theme-rommet #theme-img-1, .theme-rommet #theme-img-2, .theme-rommet #theme-img-3, .theme-vinter #theme-img-1, .theme-vinter #theme-img-2, .theme-vinter #theme-img-3 { display: block; }
+
+.theme-dino #theme-img-1 { background-image: url('Tema/dinosaur_01.png'); } .theme-dino #theme-img-2 { background-image: url('Tema/dinosaur_02.png'); } .theme-dino #theme-img-3 { background-image: url('Tema/dinosaur_03.png'); }
+.theme-fest #theme-img-1 { background-image: url('Tema/fest_01.png'); } .theme-fest #theme-img-2 { background-image: url('Tema/fest_02.png'); } .theme-fest #theme-img-3 { background-image: url('Tema/fest_03.png'); }
+.theme-racerbil #theme-img-1 { background-image: url('Tema/racerbil_01.png'); } .theme-racerbil #theme-img-2 { background-image: url('Tema/racerbil_02.png'); } .theme-racerbil #theme-img-3 { background-image: url('Tema/racerbil_03.png'); }
+.theme-kryp #theme-img-1 { background-image: url('Tema/kryp_01.png'); } .theme-kryp #theme-img-2 { background-image: url('Tema/kryp_02.png'); } .theme-kryp #theme-img-3 { background-image: url('Tema/kryp_03.png'); }
+.theme-sommerfugl #theme-img-1 { background-image: url('Tema/sommerfugl_01.png'); } .theme-sommerfugl #theme-img-2 { background-image: url('Tema/sommerfugl_02.png'); } .theme-sommerfugl #theme-img-3 { background-image: url('Tema/sommerfugl_03.png'); }
+.theme-halloween #theme-img-1 { background-image: url('Tema/halloween_01.png'); } .theme-halloween #theme-img-2 { background-image: url('Tema/halloween_02.png'); } .theme-halloween #theme-img-3 { background-image: url('Tema/halloween_03.png'); }
+.theme-host #theme-img-1 { background-image: url('Tema/host_01.png'); } .theme-host #theme-img-2 { background-image: url('Tema/host_02.png'); } .theme-host #theme-img-3 { background-image: url('Tema/host_03.png'); }
+.theme-jul #theme-img-1 { background-image: url('Tema/jul_01.png'); } .theme-jul #theme-img-2 { background-image: url('Tema/jul_02.png'); } .theme-jul #theme-img-3 { background-image: url('Tema/jul_03.png'); }
+.theme-pirat #theme-img-1 { background-image: url('Tema/sjorover_01.png'); } .theme-pirat #theme-img-2 { background-image: url('Tema/sjorover_02.png'); } .theme-pirat #theme-img-3 { background-image: url('Tema/sjorover_03.png'); }
+.theme-sommer #theme-img-1 { background-image: url('Tema/sommer_01.png'); } .theme-sommer #theme-img-2 { background-image: url('Tema/sommer_02.png'); } .theme-sommer #theme-img-3 { background-image: url('Tema/sommer_03.png'); }
+.theme-sport #theme-img-1 { background-image: url('Tema/sport_01.png'); } .theme-sport #theme-img-2 { background-image: url('Tema/sport_02.png'); } .theme-sport #theme-img-3 { background-image: url('Tema/sport_03.png'); }
+.theme-rommet #theme-img-1 { background-image: url('Tema/verdensrommet_01.png'); } .theme-rommet #theme-img-2 { background-image: url('Tema/verdensrommet_02.png'); } .theme-rommet #theme-img-3 { background-image: url('Tema/verdensrommet_03.png'); }
+.theme-vinter #theme-img-1 { background-image: url('Tema/vinter_01.png'); } .theme-vinter #theme-img-2 { background-image: url('Tema/vinter_02.png'); } .theme-vinter #theme-img-3 { background-image: url('Tema/vinter_03.png'); }
+
 /* --- PRINT / UTSKRIFT STILER --- */
 @media print {
     @page { margin: 0; size: A4 portrait; }

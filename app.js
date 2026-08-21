@@ -25,6 +25,12 @@ export function generateStaveKryss(nyStokking = true) {
     const captureArea = document.getElementById('capture-area');
     const placeholder = document.getElementById('placeholder-image');
 
+    // OPPDATER TEMA HER:
+    if (captureArea) {
+        const valgtTema = document.getElementById('theme-select')?.value || 'tema-standard';
+        captureArea.className = valgtTema;
+    }
+
     if (!outputContainer) return;
 
     // 1. Hent bildestørrelse og finn maks grense

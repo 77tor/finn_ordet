@@ -88,6 +88,30 @@
         </select>
     </div>
 
+<div class="control-item">
+    <span>Velg tema</span>
+    <select id="theme-select" onchange="oppdaterVisning()">
+        <option value="tema-standard">Standard (Blå/Grå)</option>
+        <option value="tema-skog">Skog og Natur (Grønn)</option>
+        <option value="tema-sol">Solskinn (Gul/Oransje)</option>
+        <option value="tema-minimal">Minimalistisk (Svart/Hvit)</option>
+        <option value="theme-host">🍂 Høst</option>
+        <option value="theme-vinter">❄️ Vinter</option>
+        <option value="theme-sommer">🌸 Sommer</option>
+        <option value="theme-rommet">🚀 Verdensrommet</option>
+        <option value="theme-fest">🎈 Fest / Bursdag</option>
+        <option value="theme-racerbil">🏎️ Racerbil</option>
+        <option value="theme-kryp">🐞 Småkryp</option>
+        <option value="theme-sommerfugl">🦋 Sommerfugler</option>
+        <option value="theme-halloween">🎃 Halloween</option>
+        <option value="theme-jul">🎄 Jul</option>
+        <option value="theme-dino">🦖 Dinosaurer</option>
+        <option value="theme-pirat">🏴‍☠️ Sjørøvere</option>
+        <option value="theme-sport">⚽️ Sport / Aktivitet</option>
+    </select>
+</div>
+
+
     <!-- Brytere (Switches) -->
     <div class="control-item">
         <span>STORE BOKSTAVER</span>
@@ -145,9 +169,14 @@
     </div> 
 
     <!-- Selve oppgavearket (skjules når siden åpnes) -->
-    <div id="capture-area" style="display: none;">
-        <div id="output-container"></div>
-    </div>
+<div id="capture-area" style="display: none;">
+    <!-- Temabilder i hjørnene -->
+    <div id="theme-img-1" class="theme-image"></div>
+    <div id="theme-img-2" class="theme-image"></div>
+    <div id="theme-img-3" class="theme-image"></div>
+
+    <div id="output-container"></div>
+</div>
 </div>
 
 <!-- ORD- OG BILDE-MODAL -->

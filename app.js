@@ -176,9 +176,15 @@ function tegnerFasitStreker() {
         '#1abc9c', '#e84393', '#f1c40f', '#34495e', '#d35400'
     ];
 
-    const containerRect = container.getBoundingClientRect();
     const venstrePunkter = container.querySelectorAll('.fasit-punkt-venstre');
     const hoyrePunkter = container.querySelectorAll('.fasit-punkt-hoyre');
+
+    // Hent faktisk CSS-skala (default 0.8 dersom scale brukes, ellers 1)
+    const captureArea = document.getElementById('capture-area');
+    const rect = captureArea ? captureArea.getBoundingClientRect() : null;
+    const skala = rect ? (rect.width / captureArea.offsetWidth) : 1;
+
+    const containerRect = container.getBoundingClientRect();
 
     venstrePunkter.forEach((vPunkt, index) => {
         const ord = vPunkt.getAttribute('data-ord');
@@ -188,10 +194,11 @@ function tegnerFasitStreker() {
             const r1 = vPunkt.getBoundingClientRect();
             const r2 = hPunkt.getBoundingClientRect();
 
-            const x1 = (r1.left + r1.width / 2) - containerRect.left;
-            const y1 = (r1.top + r1.height / 2) - containerRect.top;
-            const x2 = (r2.left + r2.width / 2) - containerRect.left;
-            const y2 = (r2.top + r2.height / 2) - containerRect.top;
+            // Deler på skalaen slik at strekene treffer prikkene uavhengig av zoom/scale
+            const x1 = ((r1.left + r1.width / 2) - containerRect.left) / skala;
+            const y1 = ((r1.top + r1.height / 2) - containerRect.top) / skala;
+            const x2 = ((r2.left + r2.width / 2) - containerRect.left) / skala;
+            const y2 = ((r2.top + r2.height / 2) - containerRect.top) / skala;
 
             const valgtFarge = farger[index % farger.length];
 

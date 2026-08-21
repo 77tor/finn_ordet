@@ -75,10 +75,10 @@ export function generateStaveKryss(nyStokking = true) {
     if (placeholder) placeholder.style.display = 'none';
     if (captureArea) captureArea.style.display = 'block';
 
-// Skjul det nederste hjørnebildet hvis det er 8 eller flere ord på arket
+// Skjul det nederste hjørnebildet hvis det er 10 eller flere ord på arket
     const themeImg3 = document.getElementById('theme-img-3');
     if (themeImg3) {
-        if (antallOrd >= 8) {
+        if (antallOrd >= 10) {
             themeImg3.style.setProperty('display', 'none', 'important');
         } else {
             themeImg3.style.removeProperty('display');

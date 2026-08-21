@@ -378,7 +378,6 @@ export function toggleMenu() {
     if (dropdown) dropdown.classList.toggle("show");
 }
 
-
 export function resetForm() {
     selectedAdvancedWords = [];
     gjeldendeOrdListe = [];
@@ -394,27 +393,25 @@ export function resetForm() {
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-    // 1. Dropdown-menyer
-    const imgSizeSelect = document.getElementById('image-size-select') || document.getElementById('bildestorrelse-select');
+    // 1. Dropdown-menyer (med oppdaterte ID-er)
+    const imgSizeSelect = document.getElementById('image-size') || document.getElementById('bilde-storrelse');
     if (imgSizeSelect) imgSizeSelect.value = 'Middels';
 
-    const fontSizeSelect = document.getElementById('font-size-select') || document.getElementById('skriftstorrelse-select');
+    const fontSizeSelect = document.getElementById('font-size') || document.getElementById('skrift-storrelse');
     if (fontSizeSelect) fontSizeSelect.value = 'Medium';
 
-    const fontFamilySelect = document.getElementById('font-family-select') || document.getElementById('skrifttype-select');
+    const fontFamilySelect = document.getElementById('font-family') || document.getElementById('skrifttype');
     if (fontFamilySelect) fontFamilySelect.value = 'Trykkskrift';
 
-    // Velg tema: Standard (Blå/Grå)
-    const themeSelect = document.getElementById('theme-select') || document.getElementById('tema-select');
+    // Velg tema: Sett til første valg i listen (Standard)
+    const themeSelect = document.getElementById('theme-select') || document.getElementById('velg-tema') || document.getElementById('tema-select');
     if (themeSelect) {
-        themeSelect.value = 'standard'; // Sjekk at value for Standard-temaet heter 'standard' i HTML
+        themeSelect.selectedIndex = 0; // Tvinger den til valget "Standard (Blå/Grå)"
         
-        // Setter standard klasse på arket
         if (captureArea) {
             captureArea.className = 'tema-standard'; 
         }
         
-        // Skjuler eventuelle temabilder som hører til andre temaer
         const themeImg1 = document.getElementById('theme-img-1');
         const themeImg2 = document.getElementById('theme-img-2');
         const themeImg3 = document.getElementById('theme-img-3');
@@ -424,22 +421,23 @@ export function resetForm() {
     }
 
     // 2. Brytere (Toggles)
-    const uppercaseToggle = document.getElementById('toggle-uppercase') || document.getElementById('store-bokstaver');
+    const uppercaseToggle = document.getElementById('toggle-uppercase') || document.getElementById('store-bokstaver') || document.getElementById('uppercase-toggle');
     if (uppercaseToggle) uppercaseToggle.checked = false; // av
 
     const boldToggle = document.getElementById('toggle-bold') || document.getElementById('fet-skrift');
     if (boldToggle) boldToggle.checked = false; // av
 
-    const fasitToggle = document.getElementById('toggle-fasit');
+    const fasitToggle = document.getElementById('toggle-fasit') || document.getElementById('vis-fasit');
     if (fasitToggle) fasitToggle.checked = false; // av
 
-    const shuffleToggle = document.getElementById('toggle-shuffle');
+    const shuffleToggle = document.getElementById('toggle-shuffle') || document.getElementById('stokke-rekkefolge');
     if (shuffleToggle) shuffleToggle.checked = true; // på
 
     // 3. Tilbakestill fritekstfelt
     const customInput = document.getElementById('custom-word-input');
     if (customInput) customInput.value = '';
 }
+
 
 // Lukk meny om man klikker utenfor
 window.onclick = function(event) {

@@ -192,38 +192,39 @@ select { width: 110px; }
         display: block !important; 
     }
 
-    /* Tvinger rammen til å passe 100 % på A4 med marginer */
+    /* Ramme som holdes trygt innenfor utskriftsområdet */
     #capture-area { 
         box-shadow: none !important; 
-        margin: 8mm auto !important; 
-        width: 190mm !important; 
-        height: 275mm !important; 
-        max-height: 275mm !important; 
-        padding: 8mm !important; /* Litt mindre innvendig polstring */
+        margin: 12mm auto 0 auto !important; /* Skyver rammen 12mm ned fra toppen */
+        width: 185mm !important; 
+        height: 268mm !important; /* Kortere høyde så bunnrammen løftes opp */
+        max-height: 268mm !important; 
+        padding: 8mm !important; 
+        position: relative !important;
+        overflow: hidden !important; /* Klipper bort alt som måtte stikke ut */
         box-sizing: border-box !important; 
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: space-between !important; /* Fordeler innholdet perfekt vertikalt */
+        display: block !important;
         page-break-after: avoid !important; 
         page-break-before: avoid !important;
         page-break-inside: avoid !important; 
-        overflow: hidden !important;
     }
 
-    /* Krymper linjeavstanden på ordene bittelitt kun under utskrift */
-    .ord-rad { 
-        page-break-inside: avoid; 
-        margin-bottom: 2px !important; 
-    }
-
-    /* Sørger for at pyntebildet nederst ikke krasjer med bunnrammen */
-    #capture-area img, .theme-decoration {
-        max-height: 60px !important; /* Låser maksstørrelse på pynteikoner */
+    /* NØKKELEN: Flytter pyntebildene inn i rammen slik at de ikke dytter ut bunnen */
+    #capture-area .theme-decor, 
+    #capture-area .decoration, 
+    #capture-area img[class*="decor"] {
+        max-height: 50px !important;
         width: auto !important;
+        bottom: 8px !important; /* Sikrer at bildet nederst holder seg over rammelinjen */
+        right: 8px !important;
     }
 
     ::-webkit-scrollbar { 
         display: none; 
+    }
+
+    .ord-rad { 
+        page-break-inside: avoid; 
     }
 
     /* Tvinger rammene til temaene på utskriften */

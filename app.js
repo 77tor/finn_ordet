@@ -17,6 +17,9 @@ function stokkeHoyreKolonne(skalStokke) {
             like = gjeldendeOrdListe.some((item, index) => item.ord === gjeldendeHoyreOrd[index]?.ord);
             forsok++;
         }
+    } else if (!skalStokke) {
+        // Hvis bryteren står AV, bevares nøyaktig samme rekkefølge som venstre side
+        gjeldendeHoyreOrd = [...gjeldendeOrdListe];
     }
 }
 
@@ -490,6 +493,14 @@ window.lagreModalValg = lagreModalValg;
 // --- AUTOMATISK INITIALISERING VED LASTING ---
 function initApp() {
     resetForm();
+
+    // Koble opp event-lytter for "Stokke om rekkefølge"-bryteren
+    const shuffleToggle = document.getElementById('toggle-shuffle') || document.getElementById('stokke-rekkefolge');
+    if (shuffleToggle) {
+        shuffleToggle.addEventListener('change', () => {
+            generateStaveKryss(true);
+        });
+    }
 }
 
 if (document.readyState === 'loading') {

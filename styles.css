@@ -164,8 +164,9 @@ select { width: 110px; }
 
 /* --- PRINT / UTSKRIFT STILER --- */
 @media print {
+    /* Setter 10mm trygg margin direkte på papiret */
     @page { 
-        margin: 0; 
+        margin: 10mm; 
         size: A4 portrait; 
     }
     
@@ -176,9 +177,9 @@ select { width: 110px; }
 
     body { 
         background: white; 
-        overflow: visible !important; 
-        margin: 0; 
-        padding: 0; 
+        overflow: hidden !important; 
+        margin: 0 !important; 
+        padding: 0 !important; 
     }
 
     .sidebar, .modal-overlay, #placeholder-image { 
@@ -188,18 +189,17 @@ select { width: 110px; }
     .main-content { 
         padding: 0 !important; 
         margin: 0 !important; 
-        overflow: visible !important; 
+        overflow: hidden !important; 
         display: block !important; 
     }
 
-
-/* Låser arket til nøyaktig én side og drar rammene 1cm inn */
-#capture-area { 
+    /* Fyller nøyaktig det utskrivbare området innenfor 10mm-marginen */
+    #capture-area { 
         box-shadow: none !important; 
-        margin: 10mm auto 0 auto !important; /* Dyttes 1 cm ned fra toppkanten */
-        width: 190mm !important; 
-        height: 270mm !important; /* Redusert litt for å gi rom for topp-marginen */
-        max-height: 270mm !important; 
+        margin: 0 !important; 
+        width: 100% !important; 
+        height: 100% !important; 
+        max-height: 100% !important; 
         padding: 1cm !important; 
         page-break-after: avoid !important; 
         page-break-before: avoid !important;

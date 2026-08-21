@@ -63,8 +63,10 @@ export function generateStaveKryss(nyStokking = true) {
         }
     }
 
-    // 3. Oppdater høyre side basert på ny venstreside
-    stokkeHoyreKolonne(skalStokke);
+// 3. Oppdater høyre side basert på ny venstreside
+    if (nyStokking || gjeldendeHoyreOrd.length === 0) {
+        stokkeHoyreKolonne(skalStokke);
+    }
 
     // TVING AT BEGGE LISTENE HAR SAMME LENGDE
     const antallOrd = gjeldendeOrdListe.length;
@@ -75,7 +77,7 @@ export function generateStaveKryss(nyStokking = true) {
     if (placeholder) placeholder.style.display = 'none';
     if (captureArea) captureArea.style.display = 'block';
 
-// Skjul det nederste hjørnebildet hvis det er 10 eller flere ord på arket
+    // Skjul det nederste hjørnebildet hvis det er 10 eller flere ord på arket
     const themeImg3 = document.getElementById('theme-img-3');
     if (themeImg3) {
         if (antallOrd >= 10) {

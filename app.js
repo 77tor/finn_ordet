@@ -378,6 +378,7 @@ export function toggleMenu() {
     if (dropdown) dropdown.classList.toggle("show");
 }
 
+
 export function resetForm() {
     selectedAdvancedWords = [];
     gjeldendeOrdListe = [];
@@ -393,35 +394,31 @@ export function resetForm() {
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-    // 1. Dropdown-menyer (med oppdaterte ID-er)
-    const imgSizeSelect = document.getElementById('image-size') || document.getElementById('bilde-storrelse');
-    if (imgSizeSelect) imgSizeSelect.value = 'Middels';
+    // 1. Dropdown-menyer (Tvinger til første valg uten å brekke HTML)
+    const imgSize = document.getElementById('image-size') || document.getElementById('bilde-storrelse');
+    if (imgSize) imgSize.selectedIndex = 0;
 
-    const fontSizeSelect = document.getElementById('font-size') || document.getElementById('skrift-storrelse');
-    if (fontSizeSelect) fontSizeSelect.value = 'Medium';
+    const fontSize = document.getElementById('font-size') || document.getElementById('skrift-storrelse');
+    if (fontSize) fontSize.selectedIndex = 0;
 
-    const fontFamilySelect = document.getElementById('font-family') || document.getElementById('skrifttype');
-    if (fontFamilySelect) fontFamilySelect.value = 'Trykkskrift';
+    const fontFamily = document.getElementById('font-family') || document.getElementById('skrifttype');
+    if (fontFamily) fontFamily.selectedIndex = 0;
 
-    // Velg tema: Sett til første valg i listen (Standard)
-    const themeSelect = document.getElementById('theme-select') || document.getElementById('velg-tema') || document.getElementById('tema-select');
-    if (themeSelect) {
-        themeSelect.selectedIndex = 0; // Tvinger den til valget "Standard (Blå/Grå)"
-        
-        if (captureArea) {
-            captureArea.className = 'tema-standard'; 
-        }
-        
-        const themeImg1 = document.getElementById('theme-img-1');
-        const themeImg2 = document.getElementById('theme-img-2');
-        const themeImg3 = document.getElementById('theme-img-3');
-        if (themeImg1) themeImg1.style.display = 'none';
-        if (themeImg2) themeImg2.style.display = 'none';
-        if (themeImg3) themeImg3.style.display = 'none';
-    }
+    const themeSelect = document.getElementById('theme-select') || document.getElementById('velg-tema');
+    if (themeSelect) themeSelect.selectedIndex = 0;
 
-    // 2. Brytere (Toggles)
-    const uppercaseToggle = document.getElementById('toggle-uppercase') || document.getElementById('store-bokstaver') || document.getElementById('uppercase-toggle');
+    // Tilbakestill tema-klasser og temabilder
+    if (captureArea) captureArea.className = 'tema-standard';
+    
+    const themeImg1 = document.getElementById('theme-img-1');
+    const themeImg2 = document.getElementById('theme-img-2');
+    const themeImg3 = document.getElementById('theme-img-3');
+    if (themeImg1) themeImg1.style.display = 'none';
+    if (themeImg2) themeImg2.style.display = 'none';
+    if (themeImg3) themeImg3.style.display = 'none';
+
+    // 2. Brytere (Toggles) - Matchet nøyaktig mot id-ene i generateStaveKryss()
+    const uppercaseToggle = document.getElementById('toggle-upper') || document.getElementById('toggle-uppercase') || document.getElementById('store-bokstaver');
     if (uppercaseToggle) uppercaseToggle.checked = false; // av
 
     const boldToggle = document.getElementById('toggle-bold') || document.getElementById('fet-skrift');

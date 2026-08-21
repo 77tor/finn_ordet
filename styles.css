@@ -193,16 +193,17 @@ select { width: 110px; }
     }
 
 
-/* Trygg utskriftssone med 10mm margin på alle sider */
+/* Låser arket til nøyaktig én side og drar rammene 1cm inn */
     #capture-area { 
         box-shadow: none !important; 
-        margin: 10mm auto !important; /* Skyver rammen 1 cm ned og inn fra sidene */
-        width: 190mm !important; /* A4-bredde (210) minus 20mm margin */
-        height: 277mm !important; /* A4-høyde (297) minus 20mm margin */
-        max-height: 277mm !important; 
+        margin: 0 auto !important; 
+        width: 190mm !important; 
+        height: 275mm !important; 
+        max-height: 275mm !important; 
         padding: 1cm !important; 
-        page-break-after: avoid; 
-        page-break-inside: avoid; 
+        page-break-after: avoid !important; 
+        page-break-before: avoid !important;
+        page-break-inside: avoid !important; 
         box-sizing: border-box !important; 
         display: block !important;
     }

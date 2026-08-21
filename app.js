@@ -393,12 +393,37 @@ export function resetForm() {
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-    const shuffleToggle = document.getElementById('toggle-shuffle');
-    if (shuffleToggle) shuffleToggle.checked = true;
+    // 1. Tilbakestill Dropdown-menyer
+    const imgSizeSelect = document.getElementById('image-size-select') || document.getElementById('bildestorrelse-select');
+    if (imgSizeSelect) imgSizeSelect.value = 'Middels'; // eller 'medium' ut fra value i HTML
+
+    const fontSizeSelect = document.getElementById('font-size-select') || document.getElementById('skriftstorrelse-select');
+    if (fontSizeSelect) fontSizeSelect.value = 'Medium';
+
+    const fontFamilySelect = document.getElementById('font-family-select') || document.getElementById('skrifttype-select');
+    if (fontFamilySelect) fontFamilySelect.value = 'Trykkskrift';
+
+    const themeSelect = document.getElementById('theme-select') || document.getElementById('tema-select');
+    if (themeSelect) {
+        themeSelect.value = 'standard'; // Sett til verdi/value for standardtemaet ditt
+        // Utfør temabytte hvis du har en egen funksjon for det (f.eks. updateTheme()):
+        if (typeof changeTheme === 'function') changeTheme('standard');
+    }
+
+    // 2. Tilbakestill Toggles / Brytere
+    const uppercaseToggle = document.getElementById('toggle-uppercase') || document.getElementById('store-bokstaver');
+    if (uppercaseToggle) uppercaseToggle.checked = false;
+
+    const boldToggle = document.getElementById('toggle-bold') || document.getElementById('fet-skrift');
+    if (boldToggle) boldToggle.checked = false;
 
     const fasitToggle = document.getElementById('toggle-fasit');
     if (fasitToggle) fasitToggle.checked = false;
 
+    const shuffleToggle = document.getElementById('toggle-shuffle');
+    if (shuffleToggle) shuffleToggle.checked = true;
+
+    // 3. Tøm tekstfelt for egne ord
     const customInput = document.getElementById('custom-word-input');
     if (customInput) customInput.value = '';
 }

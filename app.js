@@ -394,53 +394,54 @@ export function resetForm() {
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-// 1. Dropdown-menyer (Setters spesifikt til Middels/Medium/Trykkskrift/Standard)
+    // 1. Dropdown-menyer
     const imgSize = document.getElementById('image-size') || document.getElementById('bilde-storrelse');
     if (imgSize) {
-        // Prøver først med verdi "55" (Middels), hvis ikke velger den element 1
         imgSize.value = "55";
         if (imgSize.selectedIndex === -1) imgSize.selectedIndex = 1; 
     }
 
     const fontSize = document.getElementById('font-size') || document.getElementById('skrift-storrelse');
     if (fontSize) {
-        // Prøver først med verdi "24" (Medium), hvis ikke velger den element 1
         fontSize.value = "24";
         if (fontSize.selectedIndex === -1) fontSize.selectedIndex = 1;
     }
 
     const fontFamily = document.getElementById('font-family') || document.getElementById('skrifttype');
-    if (fontFamily) fontFamily.selectedIndex = 0; // Trykkskrift er øverst
+    if (fontFamily) fontFamily.selectedIndex = 0; 
 
     const themeSelect = document.getElementById('theme-select') || document.getElementById('velg-tema');
-    if (themeSelect) themeSelect.selectedIndex = 0; // Standard er øverst
-    // Tilbakestill tema-klasser og temabilder
+    if (themeSelect) themeSelect.selectedIndex = 0; 
+
+    // Tilbakestill tema-klasse på arket
     if (captureArea) captureArea.className = 'tema-standard';
     
+    // Fjern hardkodet display:none slik at CSS-temaene får styre bildene sine fritt
     const themeImg1 = document.getElementById('theme-img-1');
     const themeImg2 = document.getElementById('theme-img-2');
     const themeImg3 = document.getElementById('theme-img-3');
-    if (themeImg1) themeImg1.style.display = 'none';
-    if (themeImg2) themeImg2.style.display = 'none';
-    if (themeImg3) themeImg3.style.display = 'none';
+    if (themeImg1) themeImg1.style.removeProperty('display');
+    if (themeImg2) themeImg2.style.removeProperty('display');
+    if (themeImg3) themeImg3.style.removeProperty('display');
 
-    // 2. Brytere (Toggles) - Matchet nøyaktig mot id-ene i generateStaveKryss()
+    // 2. Brytere (Toggles)
     const uppercaseToggle = document.getElementById('toggle-upper') || document.getElementById('toggle-uppercase') || document.getElementById('store-bokstaver');
-    if (uppercaseToggle) uppercaseToggle.checked = false; // av
+    if (uppercaseToggle) uppercaseToggle.checked = false; 
 
     const boldToggle = document.getElementById('toggle-bold') || document.getElementById('fet-skrift');
-    if (boldToggle) boldToggle.checked = false; // av
+    if (boldToggle) boldToggle.checked = false; 
 
     const fasitToggle = document.getElementById('toggle-fasit') || document.getElementById('vis-fasit');
-    if (fasitToggle) fasitToggle.checked = false; // av
+    if (fasitToggle) fasitToggle.checked = false; 
 
     const shuffleToggle = document.getElementById('toggle-shuffle') || document.getElementById('stokke-rekkefolge');
-    if (shuffleToggle) shuffleToggle.checked = true; // på
+    if (shuffleToggle) shuffleToggle.checked = true; 
 
     // 3. Tilbakestill fritekstfelt
     const customInput = document.getElementById('custom-word-input');
     if (customInput) customInput.value = '';
 }
+
 
 
 // Lukk meny om man klikker utenfor

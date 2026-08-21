@@ -404,16 +404,17 @@ export function resetForm() {
     const fontFamilySelect = document.getElementById('font-family-select') || document.getElementById('skrifttype-select');
     if (fontFamilySelect) fontFamilySelect.value = 'Trykkskrift';
 
+    // Velg tema: Standard (Blå/Grå)
     const themeSelect = document.getElementById('theme-select') || document.getElementById('tema-select');
     if (themeSelect) {
-        themeSelect.selectedIndex = 0; // Setter "Velg tema" til det tomme/første valget
+        themeSelect.value = 'standard'; // Sjekk at value for Standard-temaet heter 'standard' i HTML
         
-        // Fjerner eventuelle tema-klasser fra captureArea
+        // Setter standard klasse på arket
         if (captureArea) {
-            captureArea.className = ''; 
+            captureArea.className = 'tema-standard'; 
         }
         
-        // Skjuler temabilder dersom de er synlige
+        // Skjuler eventuelle temabilder som hører til andre temaer
         const themeImg1 = document.getElementById('theme-img-1');
         const themeImg2 = document.getElementById('theme-img-2');
         const themeImg3 = document.getElementById('theme-img-3');
@@ -424,22 +425,21 @@ export function resetForm() {
 
     // 2. Brytere (Toggles)
     const uppercaseToggle = document.getElementById('toggle-uppercase') || document.getElementById('store-bokstaver');
-    if (uppercaseToggle) uppercaseToggle.checked = false;
+    if (uppercaseToggle) uppercaseToggle.checked = false; // av
 
     const boldToggle = document.getElementById('toggle-bold') || document.getElementById('fet-skrift');
-    if (boldToggle) boldToggle.checked = false;
+    if (boldToggle) boldToggle.checked = false; // av
 
     const fasitToggle = document.getElementById('toggle-fasit');
-    if (fasitToggle) fasitToggle.checked = false;
+    if (fasitToggle) fasitToggle.checked = false; // av
 
     const shuffleToggle = document.getElementById('toggle-shuffle');
-    if (shuffleToggle) shuffleToggle.checked = true; // Grønn / På
+    if (shuffleToggle) shuffleToggle.checked = true; // på
 
-    // 3. Tilbakestill fritekstfelt derson det finnes
+    // 3. Tilbakestill fritekstfelt
     const customInput = document.getElementById('custom-word-input');
     if (customInput) customInput.value = '';
 }
-
 
 // Lukk meny om man klikker utenfor
 window.onclick = function(event) {

@@ -394,19 +394,26 @@ export function resetForm() {
     if (captureArea) captureArea.style.display = 'none';
     if (placeholder) placeholder.style.display = 'flex';
 
-    // 1. Dropdown-menyer (Tvinger til første valg uten å brekke HTML)
+// 1. Dropdown-menyer (Setters spesifikt til Middels/Medium/Trykkskrift/Standard)
     const imgSize = document.getElementById('image-size') || document.getElementById('bilde-storrelse');
-    if (imgSize) imgSize.selectedIndex = 0;
+    if (imgSize) {
+        // Prøver først med verdi "55" (Middels), hvis ikke velger den element 1
+        imgSize.value = "55";
+        if (imgSize.selectedIndex === -1) imgSize.selectedIndex = 1; 
+    }
 
     const fontSize = document.getElementById('font-size') || document.getElementById('skrift-storrelse');
-    if (fontSize) fontSize.selectedIndex = 0;
+    if (fontSize) {
+        // Prøver først med verdi "24" (Medium), hvis ikke velger den element 1
+        fontSize.value = "24";
+        if (fontSize.selectedIndex === -1) fontSize.selectedIndex = 1;
+    }
 
     const fontFamily = document.getElementById('font-family') || document.getElementById('skrifttype');
-    if (fontFamily) fontFamily.selectedIndex = 0;
+    if (fontFamily) fontFamily.selectedIndex = 0; // Trykkskrift er øverst
 
     const themeSelect = document.getElementById('theme-select') || document.getElementById('velg-tema');
-    if (themeSelect) themeSelect.selectedIndex = 0;
-
+    if (themeSelect) themeSelect.selectedIndex = 0; // Standard er øverst
     // Tilbakestill tema-klasser og temabilder
     if (captureArea) captureArea.className = 'tema-standard';
     

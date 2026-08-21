@@ -25,7 +25,7 @@ export function generateStaveKryss(nyStokking = true) {
     const captureArea = document.getElementById('capture-area');
     const placeholder = document.getElementById('placeholder-image');
 
-    // OPPDATER TEMA HER:
+    // 0. Oppdater tema og håndter nederste bilde
     if (captureArea) {
         const valgtTema = document.getElementById('theme-select')?.value || 'tema-standard';
         captureArea.className = valgtTema;
@@ -74,6 +74,16 @@ export function generateStaveKryss(nyStokking = true) {
 
     if (placeholder) placeholder.style.display = 'none';
     if (captureArea) captureArea.style.display = 'block';
+
+// Skjul det nederste hjørnebildet hvis det er 8 eller flere ord på arket
+    const themeImg3 = document.getElementById('theme-img-3');
+    if (themeImg3) {
+        if (antallOrd >= 8) {
+            themeImg3.style.setProperty('display', 'none', 'important');
+        } else {
+            themeImg3.style.removeProperty('display');
+        }
+    }
 
     // 4. Hent stil-innstillinger
     const fontFamily = document.getElementById('font-family')?.value || "'Trykkskrift', sans-serif";

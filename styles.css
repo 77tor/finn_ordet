@@ -194,13 +194,15 @@ select { width: 110px; }
     }
 
     /* Fyller nøyaktig det utskrivbare området innenfor 10mm-marginen */
-    #capture-area { 
+#capture-area { 
         box-shadow: none !important; 
-        margin: 0 !important; 
-        width: 100% !important; 
-        height: 100% !important; 
-        max-height: 100% !important; 
+        margin: 5mm auto 0 auto !important; 
+        width: 190mm !important; 
+        height: 265mm !important; /* Korter ned høyden slik at bunnlinjen løftes godt opp */
+        max-height: 265mm !important; 
         padding: 1cm !important; 
+        position: relative !important;
+        overflow: hidden !important; /* Klipper bort alt som måtte stikke ut i bunnen */
         page-break-after: avoid !important; 
         page-break-before: avoid !important;
         page-break-inside: avoid !important; 

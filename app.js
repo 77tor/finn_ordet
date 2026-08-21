@@ -498,7 +498,10 @@ function initApp() {
     const shuffleToggle = document.getElementById('toggle-shuffle') || document.getElementById('stokke-rekkefolge');
     if (shuffleToggle) {
         shuffleToggle.addEventListener('change', () => {
-            generateStaveKryss(true);
+            // Stokker KUN om dersom det allerede er valgt/vises ord på arket
+            if (gjeldendeOrdListe.length > 0) {
+                generateStaveKryss(true);
+            }
         });
     }
 }

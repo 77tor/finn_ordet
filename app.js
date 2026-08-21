@@ -48,30 +48,36 @@ export function generateStaveKryss(nyStokking = true) {
 
 // 2. Generer eller hent venstre liste (Uten å overskrive eller slette valgte ord)
     if (harEgneValg) {
-        // Hent ut inntil maksAntall fra den komplette valglisten
+        // Hent alltid opptil maksAntall fra den komplette valglisten
         gjeldendeOrdListe = selectedAdvancedWords.slice(0, maksAntall);
     } else if (nyStokking) {
-        // Generer KUN nye tilfeldige ord dersom nyStokking eksplisitt kalles (f.eks. ved "Velg ord" eller "Stokke om")
         const muligeOrd = [...substantivDb];
         const stokket = muligeOrd.sort(() => 0.5 - Math.random());
         gjeldendeOrdListe = stokket.slice(0, Math.min(maksAntall, stokket.length));
     } else {
-        // Dersom vi kun endrer stiler og ingen ord er valgt ennå, stans generering
         if (gjeldendeOrdListe.length === 0) return;
 
-        // Hvis brukeren bytter bildestørrelse på eksisterende ord
-        if (gjeldendeOrdListe.length > maksAntall) {
+        // Hvis brukeren endrer bildestørrelse på auto-genererte ord
+        if (gjeldendeOrdListe.length < maksAntall && gjeldendeOrdListe.length < substantivDb.length) {
+            // Hvis vi utvider plassen (f.eks. fra Stor til Liten), fyll på med flere ord
+            const mangler = maksAntall - gjeldendeOrdListe.length;
+            const ubenyttede = substantivDb.filter(db => !gjeldendeOrdListe.some(g => g.ord === db.ord));
+            const ekstra = ubenyttede.sort(() => 0.5 - Math.random()).slice(0, mangler);
+            gjeldendeOrdListe = [...gjeldendeOrdListe, ...ekstra];
+        } else if (gjeldendeOrdListe.length > maksAntall) {
+            // Hvis vi krymper plassen (f.eks. fra Liten til Stor)
             gjeldendeOrdListe = gjeldendeOrdListe.slice(0, maksAntall);
         }
     }
 
-// 3. Oppdater høyre side basert på ny venstreside
-    if (nyStokking || gjeldendeHoyreOrd.length === 0) {
+    // 3. Oppdater høyre side basert på ny venstreside
+    const antallOrd = gjeldendeOrdListe.length;
+
+    // Hvis antall ord har endret seg eller vi ber om ny stokking, bygg høyre kolonne på nytt
+    if (nyStokking || gjeldendeHoyreOrd.length !== antallOrd) {
         stokkeHoyreKolonne(skalStokke);
     }
 
-    // TVING AT BEGGE LISTENE HAR SAMME LENGDE
-    const antallOrd = gjeldendeOrdListe.length;
     const hoyreOrdAvskåret = gjeldendeHoyreOrd.slice(0, antallOrd);
 
     if (antallOrd === 0) return;
@@ -88,6 +94,7 @@ export function generateStaveKryss(nyStokking = true) {
             themeImg3.style.removeProperty('display');
         }
     }
+
 
     // 4. Hent stil-innstillinger
     const fontFamily = document.getElementById('font-family')?.value || "'Trykkskrift', sans-serif";

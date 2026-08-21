@@ -164,12 +164,71 @@ select { width: 110px; }
 
 /* --- PRINT / UTSKRIFT STILER --- */
 @media print {
-    @page { margin: 0; size: A4 portrait; }
-    body { background: white; overflow: visible !important; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .sidebar, .modal-overlay, #placeholder-image { display: none !important; }
-    .main-content { padding: 0 !important; margin: 0 !important; overflow: visible !important; display: block !important; }
-    #capture-area { box-shadow: none !important; margin: 0 !important; width: 210mm !important; height: 297mm !important; max-height: 297mm !important; padding: 1.5cm !important; border: none !important; page-break-after: avoid; page-break-inside: avoid; box-sizing: border-box !important; }
-    ::-webkit-scrollbar { display: none; }
-    .ord-rad { page-break-inside: avoid; }
-    .stavelse-boks { border-color: #000 !important; }
+    @page { 
+        margin: 0; 
+        size: A4 portrait; 
+    }
+    
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    body { 
+        background: white; 
+        overflow: visible !important; 
+        margin: 0; 
+        padding: 0; 
+    }
+
+    .sidebar, .modal-overlay, #placeholder-image { 
+        display: none !important; 
+    }
+
+    .main-content { 
+        padding: 0 !important; 
+        margin: 0 !important; 
+        overflow: visible !important; 
+        display: block !important; 
+    }
+
+    #capture-area { 
+        box-shadow: none !important; 
+        margin: 0 !important; 
+        width: 210mm !important; 
+        height: 297mm !important; 
+        max-height: 297mm !important; 
+        padding: 1.5cm !important; 
+        page-break-after: avoid; 
+        page-break-inside: avoid; 
+        box-sizing: border-box !important; 
+        display: block !important;
+    }
+
+    ::-webkit-scrollbar { 
+        display: none; 
+    }
+
+    .ord-rad { 
+        page-break-inside: avoid; 
+    }
+
+    /* Tvinger rammene til temaene på utskriften */
+    #capture-area.tema-standard { border: 4px solid #2b6cb0 !important; }
+    #capture-area.tema-skog { border: 5px solid #2f855a !important; }
+    #capture-area.tema-sol { border: 5px solid #dd6b20 !important; }
+    #capture-area.tema-minimal { border: 2px solid #000000 !important; }
+    #capture-area.theme-host { border: 6px double #d35400 !important; }
+    #capture-area.theme-vinter { border: 4px dashed #3498db !important; }
+    #capture-area.theme-sommer { border: 5px solid #f1c40f !important; }
+    #capture-area.theme-rommet { border: 5px solid #9b59b6 !important; }
+    #capture-area.theme-fest { border: 5px dotted #e91e63 !important; }
+    #capture-area.theme-racerbil { border: 6px double #e53e3e !important; }
+    #capture-area.theme-kryp { border: 5px solid #2f855a !important; }
+    #capture-area.theme-sommerfugl { border: 5px dashed #b7791f !important; }
+    #capture-area.theme-halloween { border: 5px solid #333333 !important; }
+    #capture-area.theme-jul { border: 5px dashed #c0392b !important; }
+    #capture-area.theme-dino { border: 5px solid #795548 !important; }
+    #capture-area.theme-pirat { border: 6px double #34495e !important; }
+    #capture-area.theme-sport { border: 5px solid #27ae60 !important; }
 }

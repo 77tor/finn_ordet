@@ -192,13 +192,13 @@ select { width: 110px; }
         display: block !important; 
     }
 
-    /* Flytter arket 5mm inn fra papirkanten slik at skrivere ikke kutter rammen */
+    /* Justert høyde og marginer slik at bunnrammen treffer trygg utskriftssone */
     #capture-area { 
         box-shadow: none !important; 
         margin: 5mm auto !important; 
         width: 200mm !important; 
-        height: 287mm !important; 
-        max-height: 287mm !important; 
+        height: 280mm !important; 
+        max-height: 280mm !important; 
         padding: 1cm !important; 
         page-break-after: avoid; 
         page-break-inside: avoid; 

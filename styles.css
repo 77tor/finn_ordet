@@ -192,13 +192,14 @@ select { width: 110px; }
         display: block !important; 
     }
 
-    /* Justert høyde og marginer slik at bunnrammen treffer trygg utskriftssone */
+
+/* Trygg utskriftssone med 10mm margin på alle sider */
     #capture-area { 
         box-shadow: none !important; 
-        margin: 5mm auto !important; 
-        width: 200mm !important; 
-        height: 280mm !important; 
-        max-height: 280mm !important; 
+        margin: 10mm auto !important; /* Skyver rammen 1 cm ned og inn fra sidene */
+        width: 190mm !important; /* A4-bredde (210) minus 20mm margin */
+        height: 277mm !important; /* A4-høyde (297) minus 20mm margin */
+        max-height: 277mm !important; 
         padding: 1cm !important; 
         page-break-after: avoid; 
         page-break-inside: avoid; 

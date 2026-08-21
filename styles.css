@@ -212,7 +212,7 @@ select { width: 110px; }
         page-break-inside: avoid !important;
         
         /* Skalerer ned og dytter rammen 12mm ned fra toppen */
-        transform: scale(0.93) translateY(12mm) !important; 
+        transform: scale(0.93) translateY(9mm) !important; 
         transform-origin: top center !important; 
     }
 

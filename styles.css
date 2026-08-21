@@ -194,12 +194,12 @@ select { width: 110px; }
 
 
 /* Låser arket til nøyaktig én side og drar rammene 1cm inn */
-    #capture-area { 
+#capture-area { 
         box-shadow: none !important; 
-        margin: 0 auto !important; 
+        margin: 10mm auto 0 auto !important; /* Dyttes 1 cm ned fra toppkanten */
         width: 190mm !important; 
-        height: 275mm !important; 
-        max-height: 275mm !important; 
+        height: 270mm !important; /* Redusert litt for å gi rom for topp-marginen */
+        max-height: 270mm !important; 
         padding: 1cm !important; 
         page-break-after: avoid !important; 
         page-break-before: avoid !important;

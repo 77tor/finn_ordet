@@ -199,6 +199,7 @@ select { width: 110px; }
     }
 
     /* KJERNE-TRIKSET: Skalerer ned alt innholdet bittelitt og dytter det inn på arket */
+/* Sentrerer rammen perfekt både vertikalt og horisontalt */
     #capture-area { 
         box-shadow: none !important; 
         padding: 12mm 15mm !important; 
@@ -210,8 +211,8 @@ select { width: 110px; }
         page-break-after: avoid !important;
         page-break-inside: avoid !important;
         
-        /* Dette trekker rammen og alle 4 kanter inn på papiret */
-        transform: scale(0.93) translateY(2mm) !important; 
+        /* Skalerer ned og dytter rammen 12mm ned fra toppen */
+        transform: scale(0.93) translateY(12mm) !important; 
         transform-origin: top center !important; 
     }
 

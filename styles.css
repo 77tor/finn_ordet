@@ -202,7 +202,7 @@ select { width: 110px; }
 /* Sentrerer rammen perfekt både vertikalt og horisontalt */
     #capture-area { 
         box-shadow: none !important; 
-        padding: 12mm 15mm !important; 
+        padding: 5mm 15mm !important; 
         width: 210mm !important; 
         height: 297mm !important; 
         margin: 0 auto !important; 

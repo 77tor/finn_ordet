@@ -164,9 +164,8 @@ select { width: 110px; }
 
 /* --- PRINT / UTSKRIFT STILER --- */
 @media print {
-    /* Setter 10mm trygg margin direkte på papiret */
     @page { 
-        margin: 10mm; 
+        margin: 0; 
         size: A4 portrait; 
     }
     
@@ -176,7 +175,7 @@ select { width: 110px; }
     }
 
     body { 
-        background: white; 
+        background: white !important; 
         overflow: hidden !important; 
         margin: 0 !important; 
         padding: 0 !important; 
@@ -193,29 +192,38 @@ select { width: 110px; }
         display: block !important; 
     }
 
-    /* Fyller nøyaktig det utskrivbare området innenfor 10mm-marginen */
-#capture-area { 
+    /* Tvinger rammen til å passe 100 % på A4 med marginer */
+    #capture-area { 
         box-shadow: none !important; 
-        margin: 5mm auto 0 auto !important; 
+        margin: 8mm auto !important; 
         width: 190mm !important; 
-        height: 265mm !important; /* Korter ned høyden slik at bunnlinjen løftes godt opp */
-        max-height: 265mm !important; 
-        padding: 1cm !important; 
-        position: relative !important;
-        overflow: hidden !important; /* Klipper bort alt som måtte stikke ut i bunnen */
+        height: 275mm !important; 
+        max-height: 275mm !important; 
+        padding: 8mm !important; /* Litt mindre innvendig polstring */
+        box-sizing: border-box !important; 
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important; /* Fordeler innholdet perfekt vertikalt */
         page-break-after: avoid !important; 
         page-break-before: avoid !important;
         page-break-inside: avoid !important; 
-        box-sizing: border-box !important; 
-        display: block !important;
+        overflow: hidden !important;
+    }
+
+    /* Krymper linjeavstanden på ordene bittelitt kun under utskrift */
+    .ord-rad { 
+        page-break-inside: avoid; 
+        margin-bottom: 2px !important; 
+    }
+
+    /* Sørger for at pyntebildet nederst ikke krasjer med bunnrammen */
+    #capture-area img, .theme-decoration {
+        max-height: 60px !important; /* Låser maksstørrelse på pynteikoner */
+        width: auto !important;
     }
 
     ::-webkit-scrollbar { 
         display: none; 
-    }
-
-    .ord-rad { 
-        page-break-inside: avoid; 
     }
 
     /* Tvinger rammene til temaene på utskriften */

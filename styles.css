@@ -95,10 +95,23 @@ select { width: 110px; }
 #watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; opacity: 0.12; filter: grayscale(100%); pointer-events: none; z-index: 0; }
 
 
-/* --- MODAL (POPUPLAG) STILER --- */
+/* --- MODAL (POPUPLAG) STILER (OPPDATERT) --- */
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.65); backdrop-filter: blur(3px); z-index: 1000; justify-content: center; align-items: center; }
 .modal-overlay.active { display: flex !important; }
-.modal-content { background: #ffffff; width: 90%; max-width: 900px; height: 88vh; max-height: 900px; border-radius: 12px; padding: 20px 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); display: flex; flex-direction: column; color: #2c3e50; box-sizing: border-box; }
+.modal-content { 
+    background: #ffffff; 
+    width: 95%; 
+    max-width: 1050px; 
+    height: 88vh; 
+    max-height: 900px; 
+    border-radius: 12px; 
+    padding: 20px 24px; 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
+    display: flex; 
+    flex-direction: column; 
+    color: #2c3e50; 
+    box-sizing: border-box; 
+}
 .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; flex-shrink: 0; }
 .modal-header h2 { margin: 0; font-size: 1.3rem; color: #1a202c; }
 .modal-close { background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: #a0aec0; transition: color 0.2s; }
@@ -112,22 +125,54 @@ select { width: 110px; }
 .tab-content { display: none; flex: 1; min-height: 0; }
 .tab-content.active { display: flex; gap: 20px; }
 
-.fane-venstre { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
-.fane-hoyre { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.fane-venstre { width: 240px; flex-shrink: 0; display: flex; flex-direction: column; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; box-sizing: border-box; }
+.fane-hoyre { flex: 1; display: flex; flex-direction: column; min-height: 0; width: 0; }
 
-#modal-sok { width: 100%; padding: 10px 14px; border: 1px solid #cbd5e0; border-radius: 6px; margin-bottom: 12px; font-size: 0.95rem; flex-shrink: 0; }
+/* Søkefelt fikset til å holde seg nøyaktig innenfor rammen */
+#modal-sok { 
+    width: 100%; 
+    padding: 10px 14px; 
+    border: 1px solid #cbd5e0; 
+    border-radius: 6px; 
+    margin-bottom: 12px; 
+    font-size: 0.95rem; 
+    flex-shrink: 0; 
+    box-sizing: border-box; 
+}
 #modal-sok:focus { outline: none; border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2); }
 
-.ord-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; flex: 1; overflow-y: auto; padding: 4px; align-content: start; }
-.ord-kort { border: 2px solid #e2e8f0; border-radius: 8px; padding: 10px 6px; text-align: center; cursor: pointer; transition: all 0.2s; user-select: none; background: #f7fafc; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.ord-kort img { width: 40px; height: 40px; object-fit: contain; }
-.ord-kort span { font-size: 0.85rem; font-weight: 600; word-break: break-word; }
+/* Viser flere bilder på skjermen med mer kompakt layout */
+.ord-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); 
+    gap: 8px; 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 4px; 
+    align-content: start; 
+}
+.ord-kort { 
+    border: 2px solid #e2e8f0; 
+    border-radius: 8px; 
+    padding: 6px 4px; 
+    text-align: center; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+    user-select: none; 
+    background: #f7fafc; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 4px; 
+}
+.ord-kort img { width: 36px; height: 36px; object-fit: contain; }
+.ord-kort span { font-size: 0.8rem; font-weight: 600; word-break: break-word; }
 .ord-kort:hover { border-color: var(--accent-purple); transform: translateY(-2px); }
 .ord-kort.valgt, .ord-kort.selected { border-color: var(--accent-green); background-color: #e6fffa; box-shadow: 0 2px 6px rgba(39, 174, 96, 0.2); }
 
 .custom-input-group { display: flex; flex-direction: column; gap: 6px; }
 .custom-input-group label { font-weight: 600; font-size: 0.9rem; }
-.custom-input-group textarea { resize: vertical; width: 100%; }
+.custom-input-group textarea { resize: vertical; width: 100%; box-sizing: border-box; }
 
 .mine-ord-liste { list-style: none; padding: 0; margin: 10px 0 0 0; flex: 1; overflow-y: auto; }
 .mine-ord-liste li { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 6px 12px; border-radius: 6px; margin-bottom: 6px; border: 1px solid #e2e8f0; font-size: 0.9rem; }
@@ -213,8 +258,6 @@ select { width: 110px; }
         overflow: hidden !important; 
     }
 
-    /* KJERNE-TRIKSET: Skalerer ned alt innholdet bittelitt og dytter det inn på arket */
-/* Sentrerer rammen perfekt både vertikalt og horisontalt */
     #capture-area { 
         box-shadow: none !important; 
         padding: 5mm 15mm !important; 
@@ -226,12 +269,10 @@ select { width: 110px; }
         page-break-after: avoid !important;
         page-break-inside: avoid !important;
         
-        /* Skalerer ned og dytter rammen 12mm ned fra toppen */
         transform: scale(0.93) translateY(9mm) !important; 
         transform-origin: top center !important; 
     }
 
-    /* Sørger for at temabilde 3 (nederst) holder seg VELDIG trygt innenfor bunnrammen */
     #theme-img-3 {
         bottom: 15px !important;
         right: 15px !important;
@@ -247,7 +288,6 @@ select { width: 110px; }
         display: none; 
     }
 
-    /* Tvinger rammene til temaene på utskriften */
     #capture-area.tema-standard { border: 4px solid #2b6cb0 !important; }
     #capture-area.tema-skog { border: 5px solid #2f855a !important; }
     #capture-area.tema-sol { border: 5px solid #dd6b20 !important; }

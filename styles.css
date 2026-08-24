@@ -95,53 +95,100 @@ select { width: 110px; }
 #watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; opacity: 0.12; filter: grayscale(100%); pointer-events: none; z-index: 0; }
 
 
-/* --- MODAL (POPUPLAG) STILER (OPPDATERT) --- */
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.65); backdrop-filter: blur(3px); z-index: 1000; justify-content: center; align-items: center; }
+/* --- MODAL (POPUPLAG) STILER (KOMPAKT, BRED & HØY) --- */
+.modal-overlay { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    background-color: rgba(0, 0, 0, 0.65); 
+    backdrop-filter: blur(3px); 
+    z-index: 1000; 
+    justify-content: center; 
+    align-items: center; 
+}
 .modal-overlay.active { display: flex !important; }
+
 .modal-content { 
     background: #ffffff; 
     width: 95%; 
-    max-width: 1050px; 
-    height: 88vh; 
-    max-height: 900px; 
+    max-width: 1100px; 
+    height: 94vh !important; 
+    max-height: 95vh !important; 
     border-radius: 12px; 
-    padding: 20px 24px; 
+    padding: 12px 20px !important; 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); 
     display: flex; 
     flex-direction: column; 
     color: #2c3e50; 
     box-sizing: border-box; 
 }
-.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; flex-shrink: 0; }
-.modal-header h2 { margin: 0; font-size: 1.3rem; color: #1a202c; }
-.modal-close { background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: #a0aec0; transition: color 0.2s; }
+
+.modal-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px solid #e2e8f0; 
+    padding-bottom: 6px !important; 
+    flex-shrink: 0; 
+}
+.modal-header h2 { margin: 0; font-size: 1.2rem; color: #1a202c; }
+.modal-close { background: none; border: none; font-size: 1.8rem; line-height: 1; cursor: pointer; color: #a0aec0; transition: color 0.2s; }
 .modal-close:hover { color: #e53e3e; }
 
-.modal-tabs { display: flex; gap: 10px; margin: 15px 0; border-bottom: 2px solid #edf2f7; flex-shrink: 0; }
-.tab-btn { padding: 10px 16px; border: none; background: none; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: #718096; border-bottom: 3px solid transparent; transition: all 0.2s; }
+.modal-tabs { 
+    display: flex; 
+    gap: 10px; 
+    margin: 8px 0 !important; 
+    border-bottom: 2px solid #edf2f7; 
+    flex-shrink: 0; 
+}
+.tab-btn { 
+    padding: 6px 14px !important; 
+    border: none; 
+    background: none; 
+    cursor: pointer; 
+    font-weight: 600; 
+    font-size: 0.9rem; 
+    color: #718096; 
+    border-bottom: 3px solid transparent; 
+    transition: all 0.2s; 
+}
 .tab-btn:hover { color: var(--accent-purple); }
 .tab-btn.active { color: var(--accent-purple); border-bottom-color: var(--accent-purple); }
 
 .tab-content { display: none; flex: 1; min-height: 0; }
-.tab-content.active { display: flex; gap: 20px; }
+.tab-content.active { display: flex; gap: 16px; }
 
-.fane-venstre { width: 240px; flex-shrink: 0; display: flex; flex-direction: column; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; box-sizing: border-box; }
+.fane-venstre { 
+    width: 240px; 
+    flex-shrink: 0; 
+    display: flex; 
+    flex-direction: column; 
+    background: #f8fafc; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 8px; 
+    padding: 10px; 
+    box-sizing: border-box; 
+}
 .fane-hoyre { flex: 1; display: flex; flex-direction: column; min-height: 0; width: 0; }
 
 /* Søkefelt fikset til å holde seg nøyaktig innenfor rammen */
 #modal-sok { 
     width: 100%; 
-    padding: 10px 14px; 
+    padding: 8px 12px !important; 
     border: 1px solid #cbd5e0; 
     border-radius: 6px; 
-    margin-bottom: 12px; 
-    font-size: 0.95rem; 
+    margin-bottom: 8px !important; 
+    font-size: 0.9rem; 
     flex-shrink: 0; 
     box-sizing: border-box; 
 }
 #modal-sok:focus { outline: none; border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.2); }
 
-/* Viser flere bilder på skjermen med mer kompakt layout */
+/* Viser vesentlig flere bildekort i bredden og høyden */
 .ord-grid { 
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); 
@@ -178,7 +225,15 @@ select { width: 110px; }
 .mine-ord-liste li { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 6px 12px; border-radius: 6px; margin-bottom: 6px; border: 1px solid #e2e8f0; font-size: 0.9rem; }
 .mine-ord-liste button { background: #e53e3e; color: white; border: none; border-radius: 4px; padding: 2px 8px; cursor: pointer; font-size: 0.8rem; }
 
-.modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 15px; padding-top: 12px; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
+.modal-footer { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 12px; 
+    margin-top: 8px !important; 
+    padding-top: 8px !important; 
+    border-top: 1px solid #e2e8f0; 
+    flex-shrink: 0; 
+}
 
 
 /* --- TEMAER OG TEMABILDER --- */

@@ -1,8 +1,8 @@
-@font-face { font-family: 'Skogstavskrift'; src: url('skogstavskrift.otf') format('opentype'); font-weight: normal; font-style: normal; }
-@font-face { font-family: 'Trykkskrift'; src: url('trykkskrift.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'Stavskrift'; src: url('skrift/stavskrift.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'Trykkskrift'; src: url('skrift/trykkskrift.otf') format('opentype'); font-weight: normal; font-style: normal; }
 @import url('https://fonts.googleapis.com/css2?family=Andika&display=swap');
 
-:root { --sidebar-bg: #243447; --accent-green: #27ae60; --sidebar-text: #ffffff; --main-bg: #f0f2f5; --accent-purple: #9b59b6; }
+:root { --sidebar-bg: #243447; --accent-green: #27ae60; --sidebar-text: #ffffff; --main-bg: #d1d8e0; --accent-purple: #9b59b6; }
 
 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; height: 100vh; background-color: var(--main-bg); overflow: hidden; }
 
